@@ -20,3 +20,4 @@ Setting up the initial project structure and the design guides we'll follow to k
 - Put imports at the top of the file, not above the function / method that uses it. Sort the imports into groups by function.
 
 ### Logging System
+TBD (but it is critical!)
