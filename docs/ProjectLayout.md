@@ -29,6 +29,9 @@
 │   │   ├── generate_biomes             # Assign biomes based on climate and elevation
 │   │   ├── generate_elevation          # Elevation generation using tectonics and orogeny
 │   │   ├── generate_mesh               # Icosphere/hex sphere mesh construction
+│   │   │   ├── __init__.py             # get_strategy(name: str) dispatcher
+│   │   │   ├── base.py                 # BaseMeshStrategy Abstract Interface
+│   │   │   └── icosphere.py            # IcosphereMeshStrategy
 │   │   ├── generate_political_map      # Nation borders, political control, and metadata
 │   │   ├── populate_regions            # Naming and tagging of natural world regions
 │   │   ├── seed_cratons                # Craton placement strategies and tectonic base

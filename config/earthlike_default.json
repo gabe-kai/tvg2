@@ -1,0 +1,6 @@
+{
+  "radius": 6371.0,
+  "subdivision_level": 6,
+  "seed": 42,
+  "mesh_strategy": "icosphere"
+}
