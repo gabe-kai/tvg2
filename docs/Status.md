@@ -26,3 +26,15 @@ Extending the structure_dump script to allow custom ordering.
 
 ### Logging System
 TBD (but it is critical!)
+
+---
+
+## 🧭 Working Set Overview
+
+- **Status**: This file – Daily log, bugs, and short-term goals
+- **Project Layout**: [`docs/ProjectLayout.md`](../docs/ProjectLayout.md) – File & folder structure with comments
+- **Pipeline Design (Global)**: [`docs/PipelineDesign.md`](../docs/PipelineDesign.md) – High-level overview of all 3 layers
+- **Planet Generation Design**: [`generation/docs/PlanetPipeline.md`](../generation/docs/PlanetPipeline.md)
+- **Game Logic Design**: [`game_logic/docs/GamePipeline.md`](../game_logic/docs/GamePipeline.md)
+- **UI Design**: [`ui/docs/UIPipeline.md`](../ui/docs/UIPipeline.md)
+- **Planet Models**: [`generation/models/planet.py`](../generation/models/planet.py) and [related model files](../generation/models/)
