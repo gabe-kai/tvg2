@@ -10,8 +10,6 @@
 
 ## In-Progress and Next-Up
 
-Building the logging system.
-
 Fixing a bug in the structure_dump script: if I create a file / folder that sorts alphabetically later it marks the files already there as Removed, and also re-adds them in new alphabetical ordering. 
 Extending the structure_dump script to allow custom ordering.
 
@@ -25,7 +23,18 @@ Extending the structure_dump script to allow custom ordering.
 - Put imports at the top of the file, not above the function / method that uses it. Sort the imports into groups by function.
 
 ### Logging System
-TBD (but it is critical!)
+Use the project logger, not Python’s default logging.getLogger(), when building or updating files.
+
+Import via:
+```python
+from shared.logging.logger import get_logger
+log = get_logger(__name__)
+```
+
+Use log.debug(), log.info(), log.warning(), etc. as needed.
+For detailed tracing during debugging, use log.trace() (lower than debug).
+
+Logging is configured automatically; no setup is needed in each file.
 
 ---
 
