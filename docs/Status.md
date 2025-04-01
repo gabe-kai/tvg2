@@ -4,11 +4,16 @@
 
 ## Daily Commit Summaries
 
+- 2025.03.31:  Created folder structure and starting documentation. Developed PipelineDesign.md + 3 layer-specific pipeline docs. Scaffolded core data models for the planet generation pipeline.
+
 ---
 
-## In-Progress
+## In-Progress and Next-Up
 
-Setting up the initial project structure and the design guides we'll follow to keep this project organized and moving.
+Building the logging system.
+
+Fixing a bug in the structure_dump script: if I create a file / folder that sorts alphabetically later it marks the files already there as Removed, and also re-adds them in new alphabetical ordering. 
+Extending the structure_dump script to allow custom ordering.
 
 ---
 

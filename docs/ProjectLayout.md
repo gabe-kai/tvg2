@@ -10,6 +10,8 @@
 │   ├── ProjectLayout.md                # This file
 │   └── Status.md                       # Current in-progress work and critical conventions (like how to use the logger)
 ├── game_logic                          # Simulation and runtime logic layer for civilizations and world events
+│   └── docs
+│   │   └── GamePipeline.md             # Detailed design document for the game logic pipeline
 ├── generation                          # Planet generation layer and all associated data and algorithms
 │   ├── docs
 │   │   └── PlanetPipeline.md           # Detailed design document for the planet generation pipeline
@@ -40,4 +42,6 @@
 ├── shared                              # Shared utilities, constants, and cross-layer interfaces
 ├── tests                               # Unit and integration tests across all project layers
 └── ui                                  # UI application and rendering layer (initially PySide6 prototype)
+    └── docs
+        └── UIPipeline.md               # Detailed design document for the user interface pipeline
 ```
