@@ -40,7 +40,13 @@
 ├── scripts
 │   └── structure_dump.py               # The script to auto-update this file.
 ├── shared                              # Shared utilities, constants, and cross-layer interfaces
+│   ├── __init__.py
+│   ├── logger.py                       # Main interface: get_logger()
+│   └── log_config.py                   # Log formatting, handlers, levels
 ├── tests                               # Unit and integration tests across all project layers
+│   └── logging
+│       ├── test_logger_interface.py    # Tests for get_logger and basic use
+│       └── tet_log_config.py           # Tests for config setup, TRACE level, hooks
 └── ui                                  # UI application and rendering layer (initially PySide6 prototype)
     └── docs
         └── UIPipeline.md               # Detailed design document for the user interface pipeline
