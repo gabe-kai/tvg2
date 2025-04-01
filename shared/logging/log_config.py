@@ -76,7 +76,12 @@ def create_console_handler():
 def create_file_handler(log_dir="logs", filename="vassal.log"):
     os.makedirs(log_dir, exist_ok=True)
     path = os.path.join(log_dir, filename)
-    handler = RotatingFileHandler(path, maxBytes=5 * 1024 * 1024, backupCount=9)
+    handler = RotatingFileHandler(
+        path,
+        maxBytes=5 * 1024 * 1024,
+        backupCount=9,
+        encoding="utf-8"  # Ensure Unicode support in log files
+    )
     handler.setLevel(LogLevel.DEBUG)
     formatter = logging.Formatter(LogFormat.FILE)
     handler.setFormatter(formatter)
