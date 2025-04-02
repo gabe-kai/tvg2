@@ -10,7 +10,9 @@
 
 ## In-Progress and Next-Up
 
-Pipeline Stage 1: GenerateMesh
+Build the planet generation pipeline step 10 (ExportPlanet) 
+
+Build the planet-mesh-viewer standalone app for quick viewing and debugging of our planet generation pipeline.
 
 Fixing a bug in the structure_dump script: if I create a file / folder that sorts alphabetically later it marks the files already there as Removed, and also re-adds them in new alphabetical ordering. 
 Extending the structure_dump script to allow custom ordering.
