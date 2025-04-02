@@ -53,6 +53,8 @@
 │       └── log_config.py               # Log formatting, handlers, levels
 ├── tests                               # Unit and integration tests across all project layers
 │   ├── generation
+│   │   ├── models
+│   │   │   └── test_planet_io.py       # Needs description
 │   │   └── pipeline
 │   │       └── generate_mesh
 │   │           └── test_icosphere.py   # Unit tests for IcosphereMeshStrategy and Planet mesh validity
