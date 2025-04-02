@@ -1,4 +1,4 @@
-# config/layout_config.py
+# shared/project_layout_manager/config/layout_config.py
 
 import os
 
