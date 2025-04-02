@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import List, Optional
 
 from shared.project_layout_manager.models.node import Node
+from shared.project_layout_manager.models.comment_manager import update_comment_for_removal
 
 
 def scan_directory(base_path: str, ignore_list: Optional[List[str]] = None) -> List[Node]:
@@ -143,6 +144,7 @@ def update_state_with_changes(scanned_nodes: List[Node], saved_nodes: List[Node]
             # so we have an old node that might be removed
             if saved_node.status != "removed":
                 saved_node.status = "removed"
+            saved_node.description = update_comment_for_removal(saved_node.description)
             updated_list.append(saved_node)
 
     # Re-group the merged nodes into a hierarchy
