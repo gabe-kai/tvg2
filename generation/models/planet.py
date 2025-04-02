@@ -4,6 +4,8 @@
 
 from dataclasses import dataclass, field
 from typing import Optional
+import h5py
+import numpy as np
 
 from generation.models.mesh import MeshData
 from generation.models.tectonics import Craton, Plate, PlateMap
@@ -57,3 +59,53 @@ class Planet:
             f" - Biomes: {'✔' if self.biomes is not None else '✘'}\n"
             f" - Nations: {len(self.nations)}"
         )
+
+    def save(self, path: str):
+        """Save the current planet to a .planetbin HDF5 file."""
+        with h5py.File(path, "w") as f:
+            # Core
+            f.attrs["radius"] = self.radius
+            f.attrs["subdivision_level"] = self.subdivision_level
+            f.attrs["seed"] = self.seed
+
+            # Mesh
+            if self.mesh:
+                mesh_grp = f.create_group("mesh")
+                mesh_grp.create_dataset("vertices", data=self.mesh.vertices)
+                mesh_grp.create_dataset("faces", data=self.mesh.faces)
+                # Convert adjacency dict to ragged array
+                adj = [np.array(v, dtype=np.int32) for v in self.mesh.adjacency.values()]
+                mesh_grp.create_dataset("adjacency_lengths", data=[len(v) for v in adj])
+                mesh_grp.create_dataset("adjacency_flat", data=np.concatenate(adj))
+
+    @staticmethod
+    def load(path: str) -> "Planet":
+        """Load a Planet from a .planetbin HDF5 file."""
+        with h5py.File(path, "r") as f:
+            radius = f.attrs["radius"]
+            subdivision_level = f.attrs["subdivision_level"]
+            seed = f.attrs["seed"]
+
+            mesh = None
+            if "mesh" in f:
+                mesh_grp = f["mesh"]
+                vertices = mesh_grp["vertices"][:]
+                faces = mesh_grp["faces"][:]
+
+                # Reconstruct adjacency dict
+                lengths = mesh_grp["adjacency_lengths"][:]
+                flat = mesh_grp["adjacency_flat"][:]
+                adjacency = {}
+                cursor = 0
+                for i, length in enumerate(lengths):
+                    adjacency[i] = flat[cursor:cursor+length].tolist()
+                    cursor += length
+
+                mesh = MeshData(vertices=vertices, faces=faces, adjacency=adjacency)
+
+            return Planet(
+                radius=radius,
+                subdivision_level=subdivision_level,
+                seed=seed,
+                mesh=mesh
+            )
