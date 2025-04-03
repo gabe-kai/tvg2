@@ -5,17 +5,14 @@
 ## Daily Commit Summaries
 
 - 2025.03.31:  Created folder structure and starting documentation. Developed PipelineDesign.md + 3 layer-specific pipeline docs. Scaffolded core data models for the planet generation pipeline.
+- 2025.04.01:  Implement custom logging. Implement Feature: generate-mesh-pipeline. Implement Feature: planetbin-export.
+- 2025.04.02:  Create custom feature project_layout_manager.
 
 ---
 
 ## In-Progress and Next-Up
 
-Build the planet generation pipeline step 10 (ExportPlanet) 
-
 Build the planet-mesh-viewer standalone app for quick viewing and debugging of our planet generation pipeline.
-
-Fixing a bug in the structure_dump script: if I create a file / folder that sorts alphabetically later it marks the files already there as Removed, and also re-adds them in new alphabetical ordering. 
-Extending the structure_dump script to allow custom ordering.
 
 ---
 
