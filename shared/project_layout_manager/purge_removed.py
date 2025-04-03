@@ -28,6 +28,7 @@ def main():
 
     save_state(cleaned_nodes, JSON_STATE_PATH)
     print(f"Cleaned state saved to: {JSON_STATE_PATH}")
+    print(f"Don't forget to run layout_manager.py again if you want them removed from the Markdown and Flat files immediately.")
 
 if __name__ == "__main__":
     main()

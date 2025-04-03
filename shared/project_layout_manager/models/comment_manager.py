@@ -1,6 +1,7 @@
 # shared/project_layout_manager/models/comment_manager.py
 
 import datetime
+import re
 from typing import List
 from shared.project_layout_manager.models.node import Node
 
@@ -15,18 +16,18 @@ def update_comment_for_removal(existing_comment: str) -> str:
     Returns:
         str: Updated comment including a removal note.
     """
+    # If *any* [Removed on YYYY-MM-DD ...] line is present, skip adding a new one
+    pattern = r"\[Removed on \d{4}-\d{2}-\d{2}"
+    if re.search(pattern, existing_comment):
+        return existing_comment
+
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     removal_msg = f"[Removed on {timestamp}]"
-
-    # Avoid duplicating the note if it’s already present
-    if removal_msg in existing_comment:
-        return existing_comment
 
     if existing_comment.strip():
         return f"{existing_comment}\n{removal_msg}"
     else:
         return removal_msg
-
 def merge_manual_comments(current_nodes: List[Node], parsed_nodes: List[Node]) -> None:
     """
     Merges manual changes from the ASCII tree (parsed_nodes) into the existing node list (current_nodes).
