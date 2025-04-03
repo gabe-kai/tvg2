@@ -15,6 +15,9 @@ def export_ascii_tree(nodes: List[Node], include_removed: bool = False) -> str:
     # Sort: folders first, then files, both alphabetically by name
     top_level.sort(key=lambda n: (not n.is_folder, n.name.lower()))
 
+    # Get all visible lines (without descriptions) to calculate max width
+    flat_lines = []
+
     lines = []
     for i, node in enumerate(top_level):
         is_last_child = (i == len(top_level) - 1)
@@ -32,11 +35,28 @@ def export_ascii_tree(nodes: List[Node], include_removed: bool = False) -> str:
 def _build_subtree(node: Node,
                    ancestors: List[bool],
                    is_last_child: bool,
-                   include_removed: bool) -> List[str]:
+                   include_removed: bool,
+                   comment_column: int = None) -> List[str]:
     """
     Recursively builds a list of lines for 'node' and its children using a boolean array
     to track vertical pipes. Inserts a spacer line after the last child if it's a file.
     """
+    if comment_column is None:
+        label_lengths = []
+
+        def collect_line_lengths(n: Node, level_prefix: str = ""):
+            label = n.name + ("/" if n.is_folder else "")
+            if n.status == "removed":
+                label += " (removed)"
+            full_line = level_prefix + label
+            label_lengths.append(len(full_line))
+            for c in [c for c in n.children if include_removed or c.status != "removed"]:
+                collect_line_lengths(c, level_prefix + "    ")  # assume indent depth is 4 chars
+
+        collect_line_lengths(node)
+        max_label_width = max(label_lengths) if label_lengths else 0
+        comment_column = ((max_label_width + 3) // 4 + 2) * 4
+
     lines = []
 
     # Build the prefix from ancestors
@@ -55,7 +75,8 @@ def _build_subtree(node: Node,
 
     # If there's a description, put # comment after it
     if node.description:
-        current_line += f"  # {node.description}"
+        padding = max(comment_column - len(current_line), 1)
+        current_line += " " * padding + f"# {node.description}"
 
     lines.append(current_line)
 
@@ -73,7 +94,8 @@ def _build_subtree(node: Node,
                 node=child,
                 ancestors=ancestors + [is_last_child],
                 is_last_child=child_is_last,
-                include_removed=include_removed
+                include_removed=include_removed,
+                comment_column=comment_column
             )
         )
 
