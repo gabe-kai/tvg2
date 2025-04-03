@@ -45,32 +45,36 @@ def merge_manual_comments(current_nodes: List[Node], parsed_nodes: List[Node]) -
     current_map = {n.path: n for n in _flatten_nodes(current_nodes)}
     parsed_map = {n.path: n for n in _flatten_nodes(parsed_nodes)}
 
+    print(f"[DEBUG] Parsed paths: {list(parsed_map.keys())}")
+    print(f"[DEBUG] Current JSON paths: {list(current_map.keys())}")
+
     for path, parsed_node in parsed_map.items():
         if path in current_map:
             current_node = current_map[path]
             # If the parsed node has a (possibly new) description, override the current description
             if parsed_node.description and parsed_node.description != current_node.description:
+                print(f"[MERGE] Updating description for: {path}")
+                print(f"    Old: {current_node.description!r}")
+                print(f"    New: {parsed_node.description!r}")
                 current_node.description = parsed_node.description
 
-            # If the parsed node is marked removed, you could optionally
-            # update or append a custom note:
-            if parsed_node.status == "removed" and current_node.status != "removed":
-                current_node.status = "removed"
-                # Append a removal note
+            # Only add the removal note if both nodes are marked removed
+            if parsed_node.status == "removed" and current_node.status == "removed":
                 current_node.description = update_comment_for_removal(current_node.description)
 
-        # Optionally handle nodes that are in parsed_map but not in current_map (if you allow
-        # the ASCII tree to introduce brand-new items). Most workflows handle that through scanning.
-        # else:
-        #     pass
 
 def _flatten_nodes(nodes: List[Node]) -> List[Node]:
     """
-    Recursively flattens the entire hierarchy into a single list of Node objects.
+    Recursively flattens the node tree into a list and normalizes paths to use '/' separators,
+    removing any leading prefixes like 'tvg2/'.
     """
     result = []
 
     def traverse(n: Node):
+        # Normalize path to Unix-style and strip leading project root (e.g., 'tvg2/')
+        if n.path:
+            normalized = n.path.replace("\\", "/").removeprefix("tvg2/").strip("/")
+            n.path = normalized
         result.append(n)
         for child in n.children:
             traverse(child)

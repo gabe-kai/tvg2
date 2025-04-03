@@ -7,6 +7,7 @@ from shared.project_layout_manager.config.layout_config import (
     PROJECT_ROOT,
     JSON_STATE_PATH,
     MARKDOWN_FILE_PATH,
+    FLAT_FILE_PATH,
     IGNORE_LIST
 )
 
@@ -19,6 +20,9 @@ from shared.project_layout_manager.scanner.file_scanner import scan_directory, u
 # Import the ASCII parser and comment manager
 from shared.project_layout_manager.importer.ascii_parser import parse_ascii_tree
 from shared.project_layout_manager.models.comment_manager import merge_manual_comments
+from shared.project_layout_manager.exporters.ascii_exporter import export_ascii_tree
+from shared.project_layout_manager.exporters.flat_exporter import export_flat_list
+
 
 def run_manager():
     """
@@ -51,8 +55,18 @@ def run_manager():
     save_state(updated_nodes, JSON_STATE_PATH)
     print(f"Updated JSON state saved to {JSON_STATE_PATH}.")
 
-    # Optionally, export to ASCII tree or flat list here if desired
-    # e.g., ascii_exporter, flat_exporter
+    # 6. Export to ASCII tree format
+    ascii_output = export_ascii_tree(updated_nodes, include_removed=True)
+    with open(MARKDOWN_FILE_PATH, 'w', encoding='utf-8') as f:
+        f.write(ascii_output)
+    print(f"ASCII tree exported to {MARKDOWN_FILE_PATH}.")
+
+    # 7. Export to flat list format
+    flat_output = export_flat_list(updated_nodes, include_removed=True)
+    with open(FLAT_FILE_PATH, 'w', encoding='utf-8') as f:
+        f.write(flat_output)
+    print(f"Flat list exported to {FLAT_FILE_PATH}.")
+
 
 if __name__ == "__main__":
     run_manager()
