@@ -7,6 +7,7 @@
 - 2025.03.31:  Created folder structure and starting documentation. Developed PipelineDesign.md + 3 layer-specific pipeline docs. Scaffolded core data models for the planet generation pipeline.
 - 2025.04.01:  Implement custom logging. Implement Feature: generate-mesh-pipeline. Implement Feature: planetbin-export.
 - 2025.04.02:  Create custom feature project_layout_manager.
+- 2025.04.03:  Update the ProjectLayout and a lot of descriptions.
 
 ---
 
@@ -22,6 +23,7 @@ Build the planet-mesh-viewer standalone app for quick viewing and debugging of o
 - Ensure that every class, method, and function has a docstring.
 - Use inline comments extensively to explain what things do.
 - Put imports at the top of the file, not above the function / method that uses it. Sort the imports into groups by function.
+- Let's not name anything __main__.py or config.py, those are reserved. Use names specific to the feature or utility the files are for.
 
 ### Logging System
 Use the project logger, not Python’s default logging.getLogger(), when building or updating files.

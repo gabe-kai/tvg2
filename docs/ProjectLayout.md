@@ -4,7 +4,6 @@
 
 ## File & Folder Structure
 ```
-│   └── earthlike_default.json                  # CLI/JSON config preset for generating an Earth-like planet
 ├── config/
 │   └── earthlike_default.json      # CLI/JSON config preset for generating an Earth-like planet
 │   
