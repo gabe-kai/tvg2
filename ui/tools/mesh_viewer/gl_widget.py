@@ -1,7 +1,7 @@
 # ui/tools/mesh_viewer/gl_widget.py
 from PySide6.QtOpenGLWidgets import QOpenGLWidget
 from PySide6.QtGui import QMouseEvent, QWheelEvent
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QPoint
 
 from OpenGL.raw.GLU import gluPerspective
 from OpenGL.GL import *
@@ -25,7 +25,7 @@ class PlanetGLWidget(QOpenGLWidget):
 
         # Rotation and mouse controls
         self.rotation = [0.0, 0.0]
-        self.last_mouse_pos = None
+        self.last_mouse_pos = QPoint()
 
         # Compute zoom based on mesh radius
         center = np.mean(mesh_data.vertices, axis=0)
@@ -79,17 +79,19 @@ class PlanetGLWidget(QOpenGLWidget):
             glEnd()
 
     def mousePressEvent(self, event: QMouseEvent):
-        if event.button() == Qt.LeftButton:
-            self.last_mouse_pos = event.position()
+        if event.button() == Qt.MouseButton.LeftButton:
+            self.last_mouse_pos = event.position().toPoint()
 
     def mouseMoveEvent(self, event: QMouseEvent):
-        if self.last_mouse_pos is not None:
-            delta = event.position() - self.last_mouse_pos
+        if not self.last_mouse_pos.isNull():
+            delta = event.position().toPoint() - self.last_mouse_pos
             self.rotation[0] += delta.x()
             self.rotation[1] += delta.y()
-            self.last_mouse_pos = event.position()
+            self.last_mouse_pos = event.position().toPoint()
             self.update()
 
     def wheelEvent(self, event: QWheelEvent):
-        self.zoom += event.angleDelta().y() / 240.0  # Adjust zoom scale
+        delta = event.angleDelta().y() / 120  # One notch = 120
+        zoom_step = self.mesh_radius * 0.05  # 5% of radius per scroll step
+        self.zoom += -delta * zoom_step
         self.update()
