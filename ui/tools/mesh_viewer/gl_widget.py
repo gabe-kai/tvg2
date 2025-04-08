@@ -1,7 +1,8 @@
 # ui/tools/mesh_viewer/gl_widget.py
+
 from PySide6.QtOpenGLWidgets import QOpenGLWidget
 from PySide6.QtGui import QMouseEvent, QWheelEvent
-from PySide6.QtCore import Qt, QPoint
+from PySide6.QtCore import Qt, QPoint, QTimer
 
 from OpenGL.raw.GLU import gluPerspective
 from OpenGL.GL import *
@@ -16,7 +17,7 @@ log = get_logger(__name__)
 
 class PlanetGLWidget(QOpenGLWidget):
     """
-    OpenGL rendering widget for displaying a planet mesh in wireframe.
+    OpenGL rendering widget for displaying a planet mesh in wireframe or filled mode.
     """
 
     def __init__(self, mesh_data: MeshRenderData, parent=None):
@@ -26,6 +27,16 @@ class PlanetGLWidget(QOpenGLWidget):
         # Rotation and mouse controls
         self.rotation = [0.0, 0.0]
         self.last_mouse_pos = QPoint()
+        self.rotation_locked = False
+
+        # Rendering mode
+        self.show_wireframe = True
+
+        # Auto-rotation
+        self.auto_rotate = False
+        self._rotation_timer = QTimer(self)
+        self._rotation_timer.timeout.connect(self._rotate_step)
+        self._rotation_timer.start(30)  # Update every 30 ms
 
         # Compute zoom based on mesh radius
         center = np.mean(mesh_data.vertices, axis=0)
@@ -37,10 +48,30 @@ class PlanetGLWidget(QOpenGLWidget):
         log.info(f"Mesh center: {center}, max radius: {max_radius}")
         log.debug(f"Sample vertex: {mesh_data.vertices[0]}")
 
+    def set_show_wireframe(self, enabled: bool):
+        """Toggle wireframe vs. filled rendering mode."""
+        self.show_wireframe = enabled
+        self.update()
+
+    def set_rotation_locked(self, locked: bool):
+        """Enable or disable mouse-based rotation."""
+        self.rotation_locked = locked
+
+    def set_auto_rotate(self, enabled: bool):
+        """Enable or disable automatic mesh rotation."""
+        self.auto_rotate = enabled
+
+    def _rotate_step(self):
+        """Rotate slightly if auto-rotation is enabled."""
+        if self.auto_rotate:
+            self.rotation[0] += 0.3
+            self.update()
+
     def initializeGL(self):
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_CULL_FACE)
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)  # Wireframe mode
+        mode = GL_LINE if self.show_wireframe else GL_FILL
+        glPolygonMode(GL_FRONT_AND_BACK, mode)
         log.info("OpenGL initialized.")
 
     def resizeGL(self, w, h):
@@ -64,6 +95,10 @@ class PlanetGLWidget(QOpenGLWidget):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glLoadIdentity()
 
+        # Set wireframe or filled mode
+        mode = GL_LINE if self.show_wireframe else GL_FILL
+        glPolygonMode(GL_FRONT_AND_BACK, mode)
+
         # Camera transform
         glTranslatef(0.0, 0.0, self.zoom)
         glRotatef(self.rotation[1], 1.0, 0.0, 0.0)
@@ -83,7 +118,7 @@ class PlanetGLWidget(QOpenGLWidget):
             self.last_mouse_pos = event.position().toPoint()
 
     def mouseMoveEvent(self, event: QMouseEvent):
-        if not self.last_mouse_pos.isNull():
+        if not self.rotation_locked and not self.last_mouse_pos.isNull():
             delta = event.position().toPoint() - self.last_mouse_pos
             self.rotation[0] += delta.x()
             self.rotation[1] += delta.y()

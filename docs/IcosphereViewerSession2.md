@@ -61,8 +61,9 @@
 
 - Add a toggleable **sidebar panel** or **toolbar** in `PlanetViewerApp`
 - Options:
-  - [ ] Wireframe / Filled mode (OpenGL state toggle)
-  - [ ] Lock/Unlock Rotation
+  - [X] Wireframe / Filled mode (OpenGL state toggle)
+  - [X] Lock/Unlock Rotation
+  - [X] Enable Auto-Rotation
   - [ ] Toggle Face IDs
   - [ ] Toggle Elevation Overlay
   - [ ] Toggle Region Overlay

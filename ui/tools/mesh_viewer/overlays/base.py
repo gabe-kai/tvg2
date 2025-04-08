@@ -57,3 +57,17 @@ class Overlay(ABC):
         Overlays can extract or preprocess what they need.
         """
         pass
+
+    def get_category(self) -> str:
+        """
+        Return the category of this overlay for grouping in UI.
+        Subclasses should override this.
+        """
+        return "Misc"
+
+    def get_description(self) -> str:
+        """
+        Return a short description of the overlay.
+        Used for tooltips and overlay selection UI.
+        """
+        return "No description provided."
