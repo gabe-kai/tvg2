@@ -11,6 +11,9 @@ import math
 
 from ui.tools.mesh_viewer.mesh_render_data import MeshRenderData
 from shared.logging.logger import get_logger
+from ui.tools.mesh_viewer.overlay_manager import OverlayManager
+from ui.tools.mesh_viewer.overlays import ALL_OVERLAYS
+from PySide6.QtGui import QPainter
 
 log = get_logger(__name__)
 
@@ -43,6 +46,12 @@ class PlanetGLWidget(QOpenGLWidget):
         max_radius = np.linalg.norm(mesh_data.vertices - center, axis=1).max()
         self.mesh_center = center
         self.mesh_radius = max_radius
+
+        # Overlay manager
+        self.overlay_manager = OverlayManager()
+        for overlay_cls in ALL_OVERLAYS:
+            self.overlay_manager.register(overlay_cls())
+        self.overlay_manager.update_data(mesh_data)
         self.zoom = -1  # Will be set in resizeGL based on window size
 
         log.info(f"Mesh center: {center}, max radius: {max_radius}")
@@ -113,6 +122,9 @@ class PlanetGLWidget(QOpenGLWidget):
                     glVertex3f(*vertex)
             glEnd()
 
+        # Overlay OpenGL render pass
+        self.overlay_manager.render(self)
+
     def mousePressEvent(self, event: QMouseEvent):
         if event.button() == Qt.MouseButton.LeftButton:
             self.last_mouse_pos = event.position().toPoint()
@@ -124,6 +136,12 @@ class PlanetGLWidget(QOpenGLWidget):
             self.rotation[1] += delta.y()
             self.last_mouse_pos = event.position().toPoint()
             self.update()
+
+    def paintEvent(self, event):
+        super().paintEvent(event)
+        painter = QPainter(self)
+        self.overlay_manager.render_qpainter(painter, self)
+        painter.end()
 
     def wheelEvent(self, event: QWheelEvent):
         delta = event.angleDelta().y() / 120  # One notch = 120

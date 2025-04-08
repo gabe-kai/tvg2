@@ -31,9 +31,12 @@ def load_mesh_render_data(path: str | Path) -> MeshRenderData:
 
         if "elevation/values" in f:
             elevation = np.array(f["elevation/values"])
-        if "regions/face_to_region" in f:
-            face_ids = np.array(f["regions/face_to_region"])
+        if "face_ids" in f["mesh"]:
+            face_ids = np.array(f["mesh/face_ids"])
 
     log.info(f"Loaded mesh: {len(vertices)} vertices, {len(faces)} faces")
+    log.debug(f"Elevation: {'present' if elevation is not None else 'absent'}; Face IDs: {'present' if face_ids is not None else 'absent'}")
+    if face_ids is not None:
+        log.debug(f"Loaded {len(face_ids)} face IDs")
     return MeshRenderData(vertices=vertices, faces=faces,
                           elevation=elevation, face_ids=face_ids)

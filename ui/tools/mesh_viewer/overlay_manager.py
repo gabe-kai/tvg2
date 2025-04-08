@@ -60,10 +60,10 @@ class OverlayManager:
         for overlay in self.get_active():
             overlay.render(gl_widget)
 
-    def render_qpainter(self, painter: QPainter) -> None:
+    def render_qpainter(self, painter: QPainter, gl_widget: QOpenGLWidget) -> None:
         """Call render_qpainter() on each enabled overlay (2D overlay pass)."""
         for overlay in self.get_active():
-            overlay.render_qpainter(painter)
+            overlay.render_qpainter(painter, gl_widget)
 
     def handle_mouse(self, event: QMouseEvent) -> None:
         """Delegate mouse handling to all overlays."""

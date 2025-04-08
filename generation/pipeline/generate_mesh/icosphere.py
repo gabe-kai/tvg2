@@ -38,7 +38,8 @@ class IcosphereMeshStrategy(BaseMeshStrategy):
         vertices = normalize(vertices) * planet.radius
         adjacency = self._build_adjacency(faces)
 
-        planet.mesh = MeshData(vertices=vertices, faces=faces, adjacency=adjacency)
+        face_ids = np.arange(faces.shape[0], dtype=np.int32)
+        planet.mesh = MeshData(vertices=vertices, faces=faces, adjacency=adjacency, face_ids=face_ids)
 
         log.info("Icosphere mesh generation complete. Total vertices: %d, faces: %d", len(vertices), len(faces))
         return planet

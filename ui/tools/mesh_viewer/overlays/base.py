@@ -36,7 +36,7 @@ class Overlay(ABC):
         """
         pass
 
-    def render_qpainter(self, painter: QPainter) -> None:
+    def render_qpainter(self, painter: QPainter, gl_widget: QOpenGLWidget) -> None:
         """
         Optional: render 2D elements using QPainter after OpenGL pass.
         Called from GLWidget's paintEvent().
