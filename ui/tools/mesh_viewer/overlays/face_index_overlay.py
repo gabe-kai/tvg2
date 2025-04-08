@@ -60,21 +60,20 @@ class FaceIndexOverlay(Overlay):
             return
 
         gl_widget.makeCurrent()
-        # Temporarily switch polygon mode to fill so text isn't affected by wireframe
         current_mode = glGetIntegerv(GL_POLYGON_MODE)
         if isinstance(current_mode, np.ndarray):
             current_mode = int(current_mode[0])
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
-        glDisable(GL_DEPTH_TEST)  # Disable depth test to draw labels in front
+        glDisable(GL_DEPTH_TEST)
 
         painter.setRenderHint(QPainter.TextAntialiasing)
         font = QFont("Courier New")
         font.setPixelSize(14)
         painter.setFont(font)
 
-        # Use global modelview once per frame
+        visible = []
+
         modelview_global = glGetDoublev(GL_MODELVIEW_MATRIX).reshape((4, 4))
-        visible = []  # (depth, idx, screen_pos)
 
         for idx, center in enumerate(self.face_centers):
             tri = gl_widget.mesh_data.faces[idx]
@@ -86,31 +85,24 @@ class FaceIndexOverlay(Overlay):
             normal /= norm
             view_normal = modelview_global[:3, :3] @ normal
             if view_normal[2] >= 0:
-                continue  # back‑facing
-
-            # Depth = negative view‑space z (smaller means farther away)
-            center_h = np.append(center, 1.0)
-            view_center = modelview_global @ center_h
-            depth = -view_center[2]
+                continue  # back-facing
 
             screen_pos = self._project_to_screen(center, gl_widget)
             if screen_pos is None:
                 continue
-            visible.append((depth, idx, screen_pos))
 
-        # Sort nearest first and clamp to 100 faces
+            x, y, z = screen_pos
+            visible.append((z, idx, (x, y)))
+
         visible.sort(key=lambda t: t[0])
-        for depth, idx, (x, y) in visible[:100]:
+        for z, idx, (x, y) in visible[:24]:
             label = str(int(self.face_ids[idx]))
-            # Drop shadow
             painter.setPen(QColor(0, 0, 128))
             painter.drawText(x + 1, y + 1, label)
-            # Foreground
             painter.setPen(QColor(255, 255, 0))
             painter.drawText(x, y, label)
 
         glEnable(GL_DEPTH_TEST)
-        # Restore polygon mode
         glPolygonMode(GL_FRONT_AND_BACK, current_mode)
 
     def _project_to_screen(self, point_3d: np.ndarray, gl_widget: QOpenGLWidget):
@@ -120,11 +112,12 @@ class FaceIndexOverlay(Overlay):
             projection = glGetDoublev(GL_PROJECTION_MATRIX)
             viewport = glGetIntegerv(GL_VIEWPORT).astype(np.int32)
 
-            win_x, win_y, _ = gluProject(point_3d[0], point_3d[1], point_3d[2], modelview, projection, viewport)
-
-            # Convert OpenGL origin (bottom-left) to Qt (top-left)
+            win_x, win_y, win_z = gluProject(
+                point_3d[0], point_3d[1], point_3d[2],
+                modelview, projection, viewport
+            )
             qt_y = gl_widget.height() - int(win_y)
-            return int(win_x), qt_y
+            return int(win_x), qt_y, float(win_z)
         except Exception as e:
             log.warning(f"Projection failed for point {point_3d}: {e}")
             return None
