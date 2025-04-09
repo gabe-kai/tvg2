@@ -8,6 +8,7 @@ from ui.tools.mesh_viewer.gl_widget import PlanetGLWidget, RenderMode
 from ui.tools.mesh_viewer.mesh_render_data import MeshRenderData
 from shared.logging.logger import get_logger
 from ui.tools.mesh_viewer.overlays.face_index_overlay import FaceIndexOverlay
+from ui.tools.mesh_viewer.overlays.face_normals_overlay import FaceNormalsOverlay
 
 log = get_logger(__name__)
 
@@ -30,12 +31,20 @@ class PlanetViewerApp(QMainWindow):
         self.face_index_overlay = FaceIndexOverlay()
         self.mesh_widget.overlay_manager.register(self.face_index_overlay)
 
+        self.face_normals_overlay = FaceNormalsOverlay()
+        self.mesh_widget.overlay_manager.register(self.face_normals_overlay)
+
         self._init_toolbar()
         log.info("Viewer window initialized.")
 
     def _toggle_face_index_overlay(self, enabled: bool):
         """Enable/disable the Face Index overlay and refresh the view."""
         self.mesh_widget.overlay_manager.set_overlay_enabled("Face Index", enabled)
+        self.mesh_widget.update()
+
+    def _toggle_face_normals_overlay(self, enabled: bool):
+        """Enable/disable the Face Normals overlay and refresh the view."""
+        self.mesh_widget.overlay_manager.set_overlay_enabled("Face Normals", enabled)
         self.mesh_widget.update()
 
     def _init_toolbar(self):
@@ -80,3 +89,10 @@ class PlanetViewerApp(QMainWindow):
         self.face_index_action.setChecked(self.face_index_overlay.is_enabled())
         self.face_index_action.toggled.connect(lambda checked: self._toggle_face_index_overlay(checked))
         toolbar.addAction(self.face_index_action)
+
+        # Face normals overlay toggle
+        self.face_normals_action = QAction("Show Normals", self)
+        self.face_normals_action.setCheckable(True)
+        self.face_normals_action.setChecked(self.face_normals_overlay.is_enabled())
+        self.face_normals_action.toggled.connect(lambda checked: self._toggle_face_normals_overlay(checked))
+        toolbar.addAction(self.face_normals_action)

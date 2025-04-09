@@ -72,7 +72,7 @@
   - [X] Toggle Face IDs
   - [ ] Toggle Elevation Overlay
   - [ ] Toggle Region Overlay
-  - [ ] Toggle Normals Overlay
+  - [X] Toggle Normals Overlay
   - [ ] Reset Camera
 - Optional: Color map dropdown for elevation
 - Optional: Lighting toggle for shaded/flat mode
@@ -108,11 +108,11 @@ ui/tools/mesh_viewer/
 - [X] Face index overlay (draws numeric face labels)
 - [ ] Elevation overlay (color-by-scalar)
 - [ ] Stub region overlay (discrete color fallback)
-- [ ] Normals overlay (face normals, front/back coloring)
+- [X] Normals overlay (face normals, front/back coloring)
 - [X] Sidebar or toolbar toggle UI
 - [ ] Add logging on overlay switch
 - [X] Viewer control state updates (wireframe toggle, lock rotation)
-- [ ] Lighting toggle (flat vs shaded)
+- [X] Lighting toggle (flat vs shaded)
 - [ ] Pass toggles from `PlanetViewerApp` → `PlanetGLWidget`
 
 ---
