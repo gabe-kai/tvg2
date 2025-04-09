@@ -64,7 +64,7 @@
   - [X] Wireframe / Filled mode (OpenGL state toggle)
   - [X] Lock/Unlock Rotation
   - [X] Enable Auto-Rotation
-  - [ ] Toggle Face IDs
+  - [X] Toggle Face IDs
   - [ ] Toggle Elevation Overlay
   - [ ] Toggle Region Overlay
   - [ ] Reset Camera

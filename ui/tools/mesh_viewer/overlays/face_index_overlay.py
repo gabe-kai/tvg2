@@ -76,21 +76,9 @@ class FaceIndexOverlay(Overlay):
         modelview_global = glGetDoublev(GL_MODELVIEW_MATRIX).reshape((4, 4))
 
         for idx, center in enumerate(self.face_centers):
-            tri = gl_widget.mesh_data.faces[idx]
-            v0, v1, v2 = gl_widget.mesh_data.vertices[tri]
-            normal = np.cross(v1 - v0, v2 - v0)
-            norm = np.linalg.norm(normal)
-            if norm == 0:
-                continue
-            normal /= norm
-            view_normal = modelview_global[:3, :3] @ normal
-            if view_normal[2] >= 0:
-                continue  # back-facing
-
             screen_pos = self._project_to_screen(center, gl_widget)
             if screen_pos is None:
                 continue
-
             x, y, z = screen_pos
             visible.append((z, idx, (x, y)))
 
