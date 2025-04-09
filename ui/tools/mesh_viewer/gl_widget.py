@@ -1,21 +1,26 @@
 # ui/tools/mesh_viewer/gl_widget.py
 
 from PySide6.QtOpenGLWidgets import QOpenGLWidget
-from PySide6.QtGui import QMouseEvent, QWheelEvent
+from PySide6.QtGui import QMouseEvent, QWheelEvent, QPainter
 from PySide6.QtCore import Qt, QPoint, QTimer
 
 from OpenGL.raw.GLU import gluPerspective
 from OpenGL.GL import *
 import numpy as np
 import math
+from enum import Enum
 
 from ui.tools.mesh_viewer.mesh_render_data import MeshRenderData
 from shared.logging.logger import get_logger
 from ui.tools.mesh_viewer.overlay_manager import OverlayManager
 from ui.tools.mesh_viewer.overlays import ALL_OVERLAYS
-from PySide6.QtGui import QPainter
 
 log = get_logger(__name__)
+
+
+class RenderMode(Enum):
+    WIREFRAME = "wireframe"
+    FLAT_SHADED = "flat"
 
 
 class PlanetGLWidget(QOpenGLWidget):
@@ -33,7 +38,7 @@ class PlanetGLWidget(QOpenGLWidget):
         self.rotation_locked = False
 
         # Rendering mode
-        self.show_wireframe = True
+        self.render_mode = RenderMode.WIREFRAME
 
         # Auto-rotation
         self.auto_rotate = False
@@ -57,9 +62,8 @@ class PlanetGLWidget(QOpenGLWidget):
         log.info(f"Mesh center: {center}, max radius: {max_radius}")
         log.debug(f"Sample vertex: {mesh_data.vertices[0]}")
 
-    def set_show_wireframe(self, enabled: bool):
-        """Toggle wireframe vs. filled rendering mode."""
-        self.show_wireframe = enabled
+    def set_render_mode(self, mode: RenderMode):
+        self.render_mode = mode
         self.update()
 
     def set_rotation_locked(self, locked: bool):
@@ -79,8 +83,14 @@ class PlanetGLWidget(QOpenGLWidget):
     def initializeGL(self):
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_CULL_FACE)
-        mode = GL_LINE if self.show_wireframe else GL_FILL
-        glPolygonMode(GL_FRONT_AND_BACK, mode)
+
+        # Lighting setup
+        glEnable(GL_LIGHT0)
+        glLightfv(GL_LIGHT0, GL_POSITION, [0.0, 0.0, 1.0, 0.0])  # Directional light from +Z
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, [1.0, 1.0, 1.0, 1.0])   # Soft white light
+        glEnable(GL_COLOR_MATERIAL)
+        glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE)
+
         log.info("OpenGL initialized.")
 
     def resizeGL(self, w, h):
@@ -104,19 +114,30 @@ class PlanetGLWidget(QOpenGLWidget):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glLoadIdentity()
 
-        # Set wireframe or filled mode
-        mode = GL_LINE if self.show_wireframe else GL_FILL
-        glPolygonMode(GL_FRONT_AND_BACK, mode)
-
         # Camera transform
         glTranslatef(0.0, 0.0, self.zoom)
         glRotatef(self.rotation[1], 1.0, 0.0, 0.0)
         glRotatef(self.rotation[0], 0.0, 1.0, 0.0)
 
+        # Set mode
+        if self.render_mode == RenderMode.WIREFRAME:
+            glDisable(GL_LIGHTING)
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
+        else:
+            glEnable(GL_LIGHTING)
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
+
         # Draw mesh
         if self.mesh_data.vertices is not None and self.mesh_data.faces is not None:
             glBegin(GL_TRIANGLES)
             for face in self.mesh_data.faces:
+                v0, v1, v2 = (self.mesh_data.vertices[idx] for idx in face)
+                normal = np.cross(v1 - v0, v2 - v0)
+                normal /= np.linalg.norm(normal)
+                glNormal3f(*normal)
+
+                # Clay-like face color
+                glColor3f(0.7, 0.5, 0.4)
                 for idx in face:
                     vertex = self.mesh_data.vertices[idx]
                     glVertex3f(*vertex)
