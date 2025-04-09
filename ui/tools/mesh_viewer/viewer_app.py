@@ -1,7 +1,7 @@
 # ui/tools/mesh_viewer/viewer_app.py
 
-from PySide6.QtWidgets import QMainWindow, QToolBar
-from PySide6.QtGui import QAction, QActionGroup
+from PySide6.QtWidgets import QMainWindow, QToolBar, QComboBox, QWidgetAction
+from PySide6.QtGui import QAction
 from PySide6.QtCore import Qt
 
 from ui.tools.mesh_viewer.gl_widget import PlanetGLWidget, RenderMode
@@ -43,23 +43,22 @@ class PlanetViewerApp(QMainWindow):
         toolbar = QToolBar("Viewer Controls")
         self.addToolBar(Qt.ToolBarArea.TopToolBarArea, toolbar)
 
-        # Render mode toggle group
-        render_mode_group = QActionGroup(self)
-        render_mode_group.setExclusive(True)
+        # Render mode dropdown
+        render_mode_combo = QComboBox()
+        render_mode_combo.addItem("Sunlit", RenderMode.SUNLIT)
+        render_mode_combo.addItem("Flat Shaded", RenderMode.FLAT_SHADED)
+        render_mode_combo.addItem("Wireframe", RenderMode.WIREFRAME)
+        current_index = render_mode_combo.findData(self.mesh_widget.render_mode)
+        if current_index >= 0:
+            render_mode_combo.setCurrentIndex(current_index)
 
-        flat_action = QAction("Flat Shaded", self)
-        flat_action.setCheckable(True)
-        flat_action.setChecked(self.mesh_widget.render_mode == RenderMode.FLAT_SHADED)
-        flat_action.triggered.connect(lambda: self.mesh_widget.set_render_mode(RenderMode.FLAT_SHADED))
-        render_mode_group.addAction(flat_action)
-        toolbar.addAction(flat_action)
+        render_mode_combo.currentIndexChanged.connect(
+            lambda idx: self.mesh_widget.set_render_mode(render_mode_combo.itemData(idx))
+        )
 
-        wire_action = QAction("Wireframe", self)
-        wire_action.setCheckable(True)
-        wire_action.setChecked(self.mesh_widget.render_mode == RenderMode.WIREFRAME)
-        wire_action.triggered.connect(lambda: self.mesh_widget.set_render_mode(RenderMode.WIREFRAME))
-        render_mode_group.addAction(wire_action)
-        toolbar.addAction(wire_action)
+        render_mode_action = QWidgetAction(self)
+        render_mode_action.setDefaultWidget(render_mode_combo)
+        toolbar.addAction(render_mode_action)
 
         # Rotation lock toggle
         self.rotation_lock_action = QAction("Lock Rotation", self)

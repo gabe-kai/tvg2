@@ -21,6 +21,7 @@ log = get_logger(__name__)
 class RenderMode(Enum):
     WIREFRAME = "wireframe"
     FLAT_SHADED = "flat"
+    SUNLIT = "sunlit"
 
 
 class PlanetGLWidget(QOpenGLWidget):
@@ -88,6 +89,12 @@ class PlanetGLWidget(QOpenGLWidget):
         glEnable(GL_LIGHT0)
         glLightfv(GL_LIGHT0, GL_POSITION, [0.0, 0.0, 1.0, 0.0])  # Directional light from +Z
         glLightfv(GL_LIGHT0, GL_DIFFUSE, [1.0, 1.0, 1.0, 1.0])   # Soft white light
+
+        glEnable(GL_LIGHT1)
+        glLightfv(GL_LIGHT1, GL_POSITION, [1.0, 0.5, 1.0, 0.0])  # Simulated sun direction
+        glLightfv(GL_LIGHT1, GL_DIFFUSE, [1.0, 1.0, 0.2, 1.0])   # Warm sunlight yellow
+        glLightfv(GL_LIGHT1, GL_SPECULAR, [1.0, 1.0, 0.4, 1.0])
+
         glEnable(GL_COLOR_MATERIAL)
         glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE)
 
@@ -119,12 +126,19 @@ class PlanetGLWidget(QOpenGLWidget):
         glRotatef(self.rotation[1], 1.0, 0.0, 0.0)
         glRotatef(self.rotation[0], 0.0, 1.0, 0.0)
 
-        # Set mode
+        # Set rendering mode
         if self.render_mode == RenderMode.WIREFRAME:
             glDisable(GL_LIGHTING)
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
-        else:
+        elif self.render_mode == RenderMode.FLAT_SHADED:
             glEnable(GL_LIGHTING)
+            glDisable(GL_LIGHT1)
+            glEnable(GL_LIGHT0)
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
+        elif self.render_mode == RenderMode.SUNLIT:
+            glEnable(GL_LIGHTING)
+            glDisable(GL_LIGHT0)
+            glEnable(GL_LIGHT1)
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
 
         # Draw mesh
