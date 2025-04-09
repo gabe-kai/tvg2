@@ -95,7 +95,7 @@ class FaceIndexOverlay(Overlay):
             visible.append((z, idx, (x, y)))
 
         visible.sort(key=lambda t: t[0])
-        for z, idx, (x, y) in visible[:24]:
+        for z, idx, (x, y) in visible[:94]:
             label = str(int(self.face_ids[idx]))
             painter.setPen(QColor(0, 0, 128))
             painter.drawText(x + 1, y + 1, label)
