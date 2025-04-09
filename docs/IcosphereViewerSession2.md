@@ -37,6 +37,11 @@
 - If `face_region_ids` exists, color each face using a discrete colormap
 - Use flat, face-wise coloring
 
+#### 🌌 d. Normals Overlay *(new)*
+- Display a line for each face pointing in the direction of its normal
+- Color-code front- and back-facing normals (e.g. green for front, red for back)
+- Optional: Add toggle to show/hide
+
 ---
 
 ### ✅ 3. **OverlayManager Integration**
@@ -57,7 +62,7 @@
 
 ---
 
-## 🖯️ 4. **Viewer Control UI (Sidebar or Toolbar)**
+## 🤯 4. **Viewer Control UI (Sidebar or Toolbar)**
 
 - Add a toggleable **sidebar panel** or **toolbar** in `PlanetViewerApp`
 - Options:
@@ -67,8 +72,10 @@
   - [X] Toggle Face IDs
   - [ ] Toggle Elevation Overlay
   - [ ] Toggle Region Overlay
+  - [ ] Toggle Normals Overlay
   - [ ] Reset Camera
 - Optional: Color map dropdown for elevation
+- Optional: Lighting toggle for shaded/flat mode
 
 Implementation tips:
 - Use `QToolBar` or `QDockWidget` on the right
@@ -85,7 +92,8 @@ ui/tools/mesh_viewer/
 │   ├── base.py              # Overlay ABC
 │   ├── face_index_overlay.py
 │   ├── elevation_overlay.py
-│   └── region_overlay.py    # (stub for now)
+│   ├── region_overlay.py    # (stub for now)
+│   └── normals_overlay.py   # (new)
 ├── overlay_manager.py       # Coordinates active overlays
 ├── viewer_app.py            # Add sidebar panel and state toggles
 ├── gl_widget.py             # Calls overlay_manager.render()
@@ -95,19 +103,21 @@ ui/tools/mesh_viewer/
 
 ## ✅ Milestone Checklist
 
-- [ ] `Overlay` base class
-- [ ] `OverlayManager` for registration + dispatch
-- [ ] Face index overlay (draws numeric face labels)
+- [X] `Overlay` base class
+- [X] `OverlayManager` for registration + dispatch
+- [X] Face index overlay (draws numeric face labels)
 - [ ] Elevation overlay (color-by-scalar)
 - [ ] Stub region overlay (discrete color fallback)
-- [ ] Sidebar or toolbar toggle UI
+- [ ] Normals overlay (face normals, front/back coloring)
+- [X] Sidebar or toolbar toggle UI
 - [ ] Add logging on overlay switch
-- [ ] Viewer control state updates (wireframe toggle, lock rotation)
+- [X] Viewer control state updates (wireframe toggle, lock rotation)
+- [ ] Lighting toggle (flat vs shaded)
 - [ ] Pass toggles from `PlanetViewerApp` → `PlanetGLWidget`
 
 ---
 
-## 🧪 Tests & Dev Notes
+## 🥪 Tests & Dev Notes
 
 - Use `tests/ui/tools/mesh_viewer/test_overlay_manager.py`
 - Write unit tests for:
@@ -118,7 +128,7 @@ ui/tools/mesh_viewer/
 
 ---
 
-## 🖜️ Staging for Session 3
+## 🕜️ Staging for Session 3
 
 - Make overlay manager able to register overlays dynamically by name
 - Prepare hooks for CLI to choose overlays or live toggle
