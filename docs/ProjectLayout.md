@@ -8,11 +8,13 @@
 │   └── earthlike_default.json      # CLI/JSON config preset for generating an Earth-like planet
 │   
 ├── docs/
-│   ├── DevelopmentNotes.md             # Development procedures and methods this project (should) follow
-│   ├── IcosphereViewerSession2.md
-│   ├── PipelineDesign.md               # High-level overview of all major pipelines (generation, game, UI)
-│   ├── ProjectLayout.md                # This file
-│   └── Status.md                       # Current in-progress work and critical conventions (like how to use the logger)
+│   ├── step_plans/
+│   │   └── IcosphereViewerSession2.md
+│   │   
+│   ├── DevelopmentNotes.md                 # Development procedures and methods this project (should) follow
+│   ├── PipelineDesign.md                   # High-level overview of all major pipelines (generation, game, UI)
+│   ├── ProjectLayout.md                    # This file
+│   └── Status.md                           # Current in-progress work and critical conventions (like how to use the logger)
 │   
 ├── game_logic/                 # Simulation and runtime logic layer for civilizations and world events
 │   └── docs/
@@ -20,6 +22,7 @@
 │       
 ├── generation/                         # Planet generation layer and all associated data and algorithms
 │   ├── docs/
+│   │   ├── Design_SeedCratons.md       # Detailed design document for the craton seeding pipeline
 │   │   └── PlanetPipeline.md           # Detailed design document for the planet generation pipeline
 │   │   
 │   ├── models/

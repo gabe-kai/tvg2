@@ -9,16 +9,16 @@
 - 2025.04.02:  Create custom feature project_layout_manager.
 - 2025.04.03:  Update the ProjectLayout and a lot of descriptions. Built the standalone mesh viewer, phase 1 (simple).
 - 2025.04.07:  Built Overlay system. Built Toolbar: wireframe, rotation lock, & auto-rotate.
-- 2025.04.08:  Added Face ID overlay. Added Icosphere Mesh relaxer. 
+- 2025.04.08:  Added Face ID overlay. Added Icosphere Mesh relaxer.
+- 2025.04.09:  Updated Flat-Shading mode, added Sunlit-Shaded mode. Added a Normals overlay.
 
 ---
 
 ## In-Progress and Next-Up
 
-- Active Bug: I suspect that half of the normals on my generated icosphere are inverted, probably the hemisphere that starts farthest from the camera.
-
 [X] Minimal working viewer that can display a mesh
-[ ] Add modular overlay system to visualize mesh metadata
+[X] Add modular overlay system to visualize mesh metadata
+[ ] Plan & Implement the Craton-Seeding pipeline step
 [ ] Enable live debug viewing during planet generation or standalone use
 
 ---
