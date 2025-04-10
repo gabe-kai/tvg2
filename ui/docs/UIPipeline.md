@@ -58,6 +58,26 @@ ui/pipeline/<stage_name>/
 
 ---
 
+## 🖥️ Viewer Tools (Developer UI)
+
+The standalone mesh viewer (`PlanetViewerApp`) is a PySide6-based tool used to visually debug planetary mesh data during generation. It will be embedded into the editor and generation UI pipeline in the future.
+
+### 🔍 Overlay System
+
+The viewer supports modular overlays that render additional metadata on top of the mesh. These are used for debugging, editing, and live previews.
+
+- Overlays inherit from `Overlay` and implement:
+  - `get_name()` – Unique identifier for the overlay toggle
+  - `get_category()` – Grouping label (e.g. "Debug", "Terrain")
+  - `get_description()` – Shown in tooltips or overlay panels
+- Overlays can render in OpenGL or with QPainter
+- Overlay UI (sidebar or toolbar) is populated dynamically via metadata
+- Developers register overlays in a central `ALL_OVERLAYS` list
+
+This design allows new overlays to be added easily and presented consistently in the viewer UI, CLI, and future editor tool integrations.
+
+---
+
 ## 🧱 UIState Object
 
 ```python

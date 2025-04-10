@@ -7,12 +7,19 @@
 - 2025.03.31:  Created folder structure and starting documentation. Developed PipelineDesign.md + 3 layer-specific pipeline docs. Scaffolded core data models for the planet generation pipeline.
 - 2025.04.01:  Implement custom logging. Implement Feature: generate-mesh-pipeline. Implement Feature: planetbin-export.
 - 2025.04.02:  Create custom feature project_layout_manager.
+- 2025.04.03:  Update the ProjectLayout and a lot of descriptions. Built the standalone mesh viewer, phase 1 (simple).
+- 2025.04.07:  Built Overlay system. Built Toolbar: wireframe, rotation lock, & auto-rotate.
+- 2025.04.08:  Added Face ID overlay. Added Icosphere Mesh relaxer.
+- 2025.04.09:  Updated Flat-Shading mode, added Sunlit-Shaded mode. Added a Normals overlay.
 
 ---
 
 ## In-Progress and Next-Up
 
-Build the planet-mesh-viewer standalone app for quick viewing and debugging of our planet generation pipeline.
+[X] Minimal working viewer that can display a mesh
+[X] Add modular overlay system to visualize mesh metadata
+[ ] Plan & Implement the Craton-Seeding pipeline step
+[ ] Enable live debug viewing during planet generation or standalone use
 
 ---
 
@@ -22,6 +29,7 @@ Build the planet-mesh-viewer standalone app for quick viewing and debugging of o
 - Ensure that every class, method, and function has a docstring.
 - Use inline comments extensively to explain what things do.
 - Put imports at the top of the file, not above the function / method that uses it. Sort the imports into groups by function.
+- Don't name anything `__main__.py` or `config.py`, those are reserved. Use names specific to the feature or utility.
 
 ### Logging System
 Use the project logger, not Python’s default logging.getLogger(), when building or updating files.
@@ -36,6 +44,7 @@ Use log.debug(), log.info(), log.warning(), etc. as needed.
 For detailed tracing during debugging, use log.trace() (lower than debug).
 
 Logging is configured automatically; no setup is needed in each file.
+When building logging for unit tests, put the logs in tests/logs/, not in logs/ or in test-specific folders.
 
 ---
 

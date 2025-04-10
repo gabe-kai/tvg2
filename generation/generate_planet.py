@@ -94,10 +94,10 @@ if __name__ == "__main__":
 # python -m generation.generate_planet --subdivision 4 --strategy icosphere
 
 # Run using a config file:
-# python -m generation.generate_planet --config config/planet_config.json
+# python -m generation.generate_planet --config config/earthlike_default.json
 
 # Run using config file, but override subdivision level:
-# python -m generation.generate_planet --config config/planet_config.json --subdivision 3
+# python -m generation.generate_planet --config config/earthlike_default.json --subdivision 3
 
 # Run and export to file:
 # python -m generation.generate_planet --output planet_output.planetbin

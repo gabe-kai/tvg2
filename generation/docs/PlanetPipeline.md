@@ -28,10 +28,10 @@ A shared pattern is followed:
 Each stage follows this naming and structure pattern:
 ```
 /pipeline/<stage_name>/
-  ├── base.py               # Abstract base class (e.g. SeedCratonsStrategy)
-  ├── <strategy1>.py        # First implementation (e.g. random.py)
-  ├── <strategy2>.py        # More refined alternative
-  └── __init__.py           # get_strategy(name: str) -> strategy instance
+  ├─ base.py               # Abstract base class (e.g. SeedCratonsStrategy)
+  ├─ <strategy1>.py        # First implementation (e.g. random.py)
+  ├─ <strategy2>.py        # More refined alternative
+  └─ __init__.py           # get_strategy(name: str) -> strategy instance
 ```
 
 Example stage entries:
@@ -44,35 +44,43 @@ Example stage entries:
 ### 2. `SeedCratons`
 - Seeds ancient landmasses (cratons) on the mesh
 - Outputs: list of craton objects
+- **Overlay Note:** Consider adding a `CratonOverlay` that visualizes craton placement and labels by ID or type.
 
 ### 3. `SimulatePlateMotion`
 - Expands tectonic plates from cratons
 - Assigns motion vectors, boundaries, and interaction types
 - Outputs: list of plates, tectonic map per face
+- **Overlay Note:** This stage supports overlays like `PlateIDOverlay`, `PlateVectorOverlay`, or plate boundary highlights.
 
 ### 4. `GenerateElevation`
 - Uses tectonic context to deform terrain (mountains, rifts, trenches)
 - Outputs: elevation per face or vertex
+- **Overlay Note:** Enables `ElevationOverlay` for color-mapped terrain preview
 
 ### 5. `SimulateErosion`
 - Applies erosion simulation over elevation map
 - Outputs: modified elevation, drainage map
+- **Overlay Note:** Optional erosion heatmap or drainage direction overlay
 
 ### 6. `SimulateClimate`
 - Calculates temperature and precipitation per face
 - Outputs: climate data map
+- **Overlay Note:** Enables overlays like `TemperatureOverlay` and `PrecipitationOverlay`
 
 ### 7. `GenerateBiomes`
 - Maps biomes based on climate and elevation
 - Outputs: biome ID per face
+- **Overlay Note:** Biome category color-mapped overlay (discrete colormap)
 
 ### 8. `PopulateRegions`
 - Places geographic labels (continents, oceans, mountain ranges)
 - Outputs: region metadata layer
+- **Overlay Note:** Region ID or label overlays can visualize named areas
 
 ### 9. `GeneratePoliticalMap`
 - Seeds nations and draws territorial borders
 - Outputs: political ownership per face, nation metadata
+- **Overlay Note:** Enables `PoliticalMapOverlay` or `NationOverlay`
 
 ### 10. `ExportPlanet`
 - Compresses and serializes the entire `Planet` object
@@ -111,6 +119,7 @@ for stage in pipeline:
 - Strategy implementations should live in subfolders with `base.py` and `get_strategy()`
 - Use shared base classes and ABCs for consistency across strategies
 - Avoid tight coupling; each stage should only depend on the structure of `Planet`
+- **If a stage adds visual data to the mesh, consider adding a viewer overlay to help with debugging or inspection.**
 
 ---
 

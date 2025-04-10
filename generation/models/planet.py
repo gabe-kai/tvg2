@@ -1,5 +1,4 @@
 # generation/models/planet.py
-# -----------------------------------
 # Data structure representing a procedurally generated planet
 
 from dataclasses import dataclass, field
@@ -49,9 +48,16 @@ class Planet:
     nations: list[Nation] = field(default_factory=list)
 
     def summary(self) -> str:
+        mesh_info = "✘"
+        if self.mesh:
+            num_faces = self.mesh.faces.shape[0]
+            face_ids = '✔' if self.mesh.face_ids is not None else '✘'
+            adjacency = '✔' if self.mesh.adjacency else '✘'
+            mesh_info = f"✔ ({num_faces} faces, face_ids: {face_ids}, adjacency: {adjacency})"
+
         return (
             f"Planet(radius={self.radius}, subdivision_level={self.subdivision_level}, seed={self.seed})\n"
-            f" - Mesh: {'✔' if self.mesh is not None else '✘'}\n"
+            f" - Mesh: {mesh_info}\n"
             f" - Cratons: {len(self.cratons)}\n"
             f" - Plates: {len(self.plates)}\n"
             f" - Elevation: {'✔' if self.elevation is not None else '✘'}\n"
@@ -68,6 +74,8 @@ class Planet:
             f.attrs["subdivision_level"] = self.subdivision_level
             f.attrs["seed"] = self.seed
 
+            print(f"Saving planet with {self.mesh.faces.shape[0]} faces and face_ids: {self.mesh.face_ids is not None}")
+
             # Mesh
             if self.mesh:
                 mesh_grp = f.create_group("mesh")
@@ -77,6 +85,11 @@ class Planet:
                 adj = [np.array(v, dtype=np.int32) for v in self.mesh.adjacency.values()]
                 mesh_grp.create_dataset("adjacency_lengths", data=[len(v) for v in adj])
                 mesh_grp.create_dataset("adjacency_flat", data=np.concatenate(adj))
+                # Save face IDs
+                if self.mesh.face_ids is None:
+                    print("Generating face IDs before export...")
+                    self.mesh.face_ids = np.arange(self.mesh.faces.shape[0], dtype=np.int32)
+                mesh_grp.create_dataset("face_ids", data=self.mesh.face_ids)
 
     @staticmethod
     def load(path: str) -> "Planet":
@@ -91,6 +104,7 @@ class Planet:
                 mesh_grp = f["mesh"]
                 vertices = mesh_grp["vertices"][:]
                 faces = mesh_grp["faces"][:]
+                face_ids = mesh_grp["face_ids"][:] if "face_ids" in mesh_grp else None
 
                 # Reconstruct adjacency dict
                 lengths = mesh_grp["adjacency_lengths"][:]
@@ -101,7 +115,7 @@ class Planet:
                     adjacency[i] = flat[cursor:cursor+length].tolist()
                     cursor += length
 
-                mesh = MeshData(vertices=vertices, faces=faces, adjacency=adjacency)
+                mesh = MeshData(vertices=vertices, faces=faces, adjacency=adjacency, face_ids=face_ids)
 
             return Planet(
                 radius=radius,
