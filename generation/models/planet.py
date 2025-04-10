@@ -74,8 +74,6 @@ class Planet:
             f.attrs["subdivision_level"] = self.subdivision_level
             f.attrs["seed"] = self.seed
 
-            print(f"Saving planet with {self.mesh.faces.shape[0]} faces and face_ids: {self.mesh.face_ids is not None}")
-
             # Mesh
             if self.mesh:
                 mesh_grp = f.create_group("mesh")
