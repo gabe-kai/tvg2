@@ -9,12 +9,15 @@
 │   
 ├── docs/
 │   ├── step_plans/
-│   │   └── IcosphereViewerSession2.md
-│   │   
-│   ├── DevelopmentNotes.md                 # Development procedures and methods this project (should) follow
-│   ├── PipelineDesign.md                   # High-level overview of all major pipelines (generation, game, UI)
-│   ├── ProjectLayout.md                    # This file
-│   └── Status.md                           # Current in-progress work and critical conventions (like how to use the logger)
+│   │   ├── done/
+│   │   └── todo/
+│   │       ├── IcosphereViewerSession2.md      # Build a stand-alone mesh viewer to debug planet creation
+│   │       └── refactor_generate_planet.md     # Plan to split the CLI commands out of generate_planet
+│   │       
+│   ├── DevelopmentNotes.md                     # Development procedures and methods this project (should) follow
+│   ├── PipelineDesign.md                       # High-level overview of all major pipelines (generation, game, UI)
+│   ├── ProjectLayout.md                        # This file
+│   └── Status.md                               # Current in-progress work and critical conventions (like how to use the logger)
 │   
 ├── game_logic/                 # Simulation and runtime logic layer for civilizations and world events
 │   └── docs/
