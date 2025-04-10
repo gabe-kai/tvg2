@@ -9,6 +9,7 @@ from ui.tools.mesh_viewer.mesh_render_data import MeshRenderData
 from shared.logging.logger import get_logger
 from ui.tools.mesh_viewer.overlays.face_index_overlay import FaceIndexOverlay
 from ui.tools.mesh_viewer.overlays.face_normals_overlay import FaceNormalsOverlay
+from ui.tools.mesh_viewer.overlays.craton_overlay import CratonOverlay
 
 log = get_logger(__name__)
 
@@ -33,6 +34,9 @@ class PlanetViewerApp(QMainWindow):
 
         self.face_normals_overlay = FaceNormalsOverlay()
         self.mesh_widget.overlay_manager.register(self.face_normals_overlay)
+
+        self.craton_overlay = CratonOverlay()
+        self.mesh_widget.overlay_manager.render(self.craton_overlay)
 
         self._init_toolbar()
         log.info("Viewer window initialized.")
@@ -96,3 +100,12 @@ class PlanetViewerApp(QMainWindow):
         self.face_normals_action.setChecked(self.face_normals_overlay.is_enabled())
         self.face_normals_action.toggled.connect(lambda checked: self._toggle_face_normals_overlay(checked))
         toolbar.addAction(self.face_normals_action)
+
+        # Craton overlay toggle
+        self.craton_overlay_action = QAction("Show Cratons", self)
+        self.craton_overlay_action.setCheckable(True)
+        self.craton_overlay_action.setChecked(self.craton_overlay.is_enabled())
+        self.craton_overlay_action.toggled.connect(
+            lambda checked: self.mesh_widget.overlay_manager.set_overlay_enabled("Cratons", checked)
+        )
+        toolbar.addAction(self.craton_overlay_action)
