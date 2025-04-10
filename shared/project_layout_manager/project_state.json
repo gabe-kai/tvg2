@@ -1,27 +1,18 @@
 [
     {
-        "name": "game_logic",
-        "path": "game_logic",
+        "name": "scripts",
+        "path": "scripts",
         "is_folder": true,
-        "description": "Simulation and runtime logic layer for civilizations and world events",
+        "description": "",
         "status": "active",
         "children": [
             {
-                "name": "docs",
-                "path": "game_logic/docs",
-                "is_folder": true,
-                "description": "",
+                "name": "structure_dump.py",
+                "path": "scripts/structure_dump.py",
+                "is_folder": false,
+                "description": "(OLD) The script to auto-update this file.",
                 "status": "active",
-                "children": [
-                    {
-                        "name": "GamePipeline.md",
-                        "path": "game_logic/docs/GamePipeline.md",
-                        "is_folder": false,
-                        "description": "Detailed design document for the game logic pipeline",
-                        "status": "active",
-                        "children": []
-                    }
-                ]
+                "children": []
             }
         ]
     },
@@ -50,6 +41,39 @@
                 ]
             },
             {
+                "name": "logging",
+                "path": "shared/logging",
+                "is_folder": true,
+                "description": "",
+                "status": "active",
+                "children": [
+                    {
+                        "name": "log_config.py",
+                        "path": "shared/logging/log_config.py",
+                        "is_folder": false,
+                        "description": "Main interface: get_logger()",
+                        "status": "active",
+                        "children": []
+                    },
+                    {
+                        "name": "logger.py",
+                        "path": "shared/logging/logger.py",
+                        "is_folder": false,
+                        "description": "Log formatting, handlers, levels",
+                        "status": "active",
+                        "children": []
+                    },
+                    {
+                        "name": "__init__.py",
+                        "path": "shared/logging/__init__.py",
+                        "is_folder": false,
+                        "description": "",
+                        "status": "active",
+                        "children": []
+                    }
+                ]
+            },
+            {
                 "name": "project_layout_manager",
                 "path": "shared/project_layout_manager",
                 "is_folder": true,
@@ -57,10 +81,76 @@
                 "status": "active",
                 "children": [
                     {
+                        "name": "config",
+                        "path": "shared/project_layout_manager/config",
+                        "is_folder": true,
+                        "description": "User-defined settings controlling output paths and formatting behavior",
+                        "status": "active",
+                        "children": [
+                            {
+                                "name": "__init__.py",
+                                "path": "shared/project_layout_manager/config/__init__.py",
+                                "is_folder": false,
+                                "description": "",
+                                "status": "active",
+                                "children": []
+                            },
+                            {
+                                "name": "layout_config.py",
+                                "path": "shared/project_layout_manager/config/layout_config.py",
+                                "is_folder": false,
+                                "description": "Loads and validates layout/export settings",
+                                "status": "active",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
                         "name": "purge_removed.py",
                         "path": "shared/project_layout_manager/purge_removed.py",
                         "is_folder": false,
                         "description": "CLI utility to permanently delete removed nodes from project_state.json",
+                        "status": "active",
+                        "children": []
+                    },
+                    {
+                        "name": "PROJECT_LAYOUT_FLAT.txt",
+                        "path": "shared/project_layout_manager/PROJECT_LAYOUT_FLAT.txt",
+                        "is_folder": false,
+                        "description": "Flat export file (generated)",
+                        "status": "active",
+                        "children": []
+                    },
+                    {
+                        "name": "storage",
+                        "path": "shared/project_layout_manager/storage",
+                        "is_folder": true,
+                        "description": "Handles persistent layout data storage",
+                        "status": "active",
+                        "children": [
+                            {
+                                "name": "__init__.py",
+                                "path": "shared/project_layout_manager/storage/__init__.py",
+                                "is_folder": false,
+                                "description": "",
+                                "status": "active",
+                                "children": []
+                            },
+                            {
+                                "name": "json_storage.py",
+                                "path": "shared/project_layout_manager/storage/json_storage.py",
+                                "is_folder": false,
+                                "description": "Reads/writes project_state.json which stores the internal node tree",
+                                "status": "active",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "name": "layout_manager.py",
+                        "path": "shared/project_layout_manager/layout_manager.py",
+                        "is_folder": false,
+                        "description": "Orchestrates scanning, parsing, merging, and exporting",
                         "status": "active",
                         "children": []
                     },
@@ -71,14 +161,6 @@
                         "description": "Output logic for saving project structure in various formats",
                         "status": "active",
                         "children": [
-                            {
-                                "name": "flat_exporter.py",
-                                "path": "shared/project_layout_manager/exporters/flat_exporter.py",
-                                "is_folder": false,
-                                "description": "Writes a flat file list (one path per line)",
-                                "status": "active",
-                                "children": []
-                            },
                             {
                                 "name": "__init__.py",
                                 "path": "shared/project_layout_manager/exporters/__init__.py",
@@ -94,29 +176,61 @@
                                 "description": "Writes the ASCII tree structure to a .md file",
                                 "status": "active",
                                 "children": []
+                            },
+                            {
+                                "name": "flat_exporter.py",
+                                "path": "shared/project_layout_manager/exporters/flat_exporter.py",
+                                "is_folder": false,
+                                "description": "Writes a flat file list (one path per line)",
+                                "status": "active",
+                                "children": []
                             }
                         ]
                     },
                     {
-                        "name": "storage",
-                        "path": "shared/project_layout_manager/storage",
+                        "name": "project_state.json",
+                        "path": "shared/project_layout_manager/project_state.json",
+                        "is_folder": false,
+                        "description": "Internal representation of the current project layout (updated automatically)",
+                        "status": "active",
+                        "children": []
+                    },
+                    {
+                        "name": "PROJECT_LAYOUT_TREE.md",
+                        "path": "shared/project_layout_manager/PROJECT_LAYOUT_TREE.md",
+                        "is_folder": false,
+                        "description": "ASCII tree export file with editable comments",
+                        "status": "active",
+                        "children": []
+                    },
+                    {
+                        "name": "models",
+                        "path": "shared/project_layout_manager/models",
                         "is_folder": true,
-                        "description": "Handles persistent layout data storage",
+                        "description": "Shared data models for layout nodes and comment management",
                         "status": "active",
                         "children": [
                             {
-                                "name": "json_storage.py",
-                                "path": "shared/project_layout_manager/storage/json_storage.py",
+                                "name": "__init__.py",
+                                "path": "shared/project_layout_manager/models/__init__.py",
                                 "is_folder": false,
-                                "description": "Reads/writes project_state.json which stores the internal node tree",
+                                "description": "",
                                 "status": "active",
                                 "children": []
                             },
                             {
-                                "name": "__init__.py",
-                                "path": "shared/project_layout_manager/storage/__init__.py",
+                                "name": "comment_manager.py",
+                                "path": "shared/project_layout_manager/models/comment_manager.py",
                                 "is_folder": false,
-                                "description": "",
+                                "description": "Handles merging and syncing of comment data across formats",
+                                "status": "active",
+                                "children": []
+                            },
+                            {
+                                "name": "node.py",
+                                "path": "shared/project_layout_manager/models/node.py",
+                                "is_folder": false,
+                                "description": "Defines the Node class representing a file or folder",
                                 "status": "active",
                                 "children": []
                             }
@@ -148,80 +262,6 @@
                         ]
                     },
                     {
-                        "name": "PROJECT_LAYOUT_FLAT.txt",
-                        "path": "shared/project_layout_manager/PROJECT_LAYOUT_FLAT.txt",
-                        "is_folder": false,
-                        "description": "Flat export file (generated)",
-                        "status": "active",
-                        "children": []
-                    },
-                    {
-                        "name": "layout_manager.py",
-                        "path": "shared/project_layout_manager/layout_manager.py",
-                        "is_folder": false,
-                        "description": "Orchestrates scanning, parsing, merging, and exporting",
-                        "status": "active",
-                        "children": []
-                    },
-                    {
-                        "name": "config",
-                        "path": "shared/project_layout_manager/config",
-                        "is_folder": true,
-                        "description": "User-defined settings controlling output paths and formatting behavior",
-                        "status": "active",
-                        "children": [
-                            {
-                                "name": "__init__.py",
-                                "path": "shared/project_layout_manager/config/__init__.py",
-                                "is_folder": false,
-                                "description": "",
-                                "status": "active",
-                                "children": []
-                            },
-                            {
-                                "name": "layout_config.py",
-                                "path": "shared/project_layout_manager/config/layout_config.py",
-                                "is_folder": false,
-                                "description": "Loads and validates layout/export settings",
-                                "status": "active",
-                                "children": []
-                            }
-                        ]
-                    },
-                    {
-                        "name": "models",
-                        "path": "shared/project_layout_manager/models",
-                        "is_folder": true,
-                        "description": "Shared data models for layout nodes and comment management",
-                        "status": "active",
-                        "children": [
-                            {
-                                "name": "node.py",
-                                "path": "shared/project_layout_manager/models/node.py",
-                                "is_folder": false,
-                                "description": "Defines the Node class representing a file or folder",
-                                "status": "active",
-                                "children": []
-                            },
-                            {
-                                "name": "comment_manager.py",
-                                "path": "shared/project_layout_manager/models/comment_manager.py",
-                                "is_folder": false,
-                                "description": "Handles merging and syncing of comment data across formats",
-                                "status": "active",
-                                "children": []
-                            },
-                            {
-                                "name": "__init__.py",
-                                "path": "shared/project_layout_manager/models/__init__.py",
-                                "is_folder": false,
-                                "description": "",
-                                "status": "active",
-                                "children": []
-                            }
-                        ]
-                    },
-                    {
                         "name": "scanner",
                         "path": "shared/project_layout_manager/scanner",
                         "is_folder": true,
@@ -229,71 +269,22 @@
                         "status": "active",
                         "children": [
                             {
-                                "name": "file_scanner.py",
-                                "path": "shared/project_layout_manager/scanner/file_scanner.py",
-                                "is_folder": false,
-                                "description": "Scans filesystem and updates/removes nodes accordingly",
-                                "status": "active",
-                                "children": []
-                            },
-                            {
                                 "name": "__init__.py",
                                 "path": "shared/project_layout_manager/scanner/__init__.py",
                                 "is_folder": false,
                                 "description": "",
                                 "status": "active",
                                 "children": []
+                            },
+                            {
+                                "name": "file_scanner.py",
+                                "path": "shared/project_layout_manager/scanner/file_scanner.py",
+                                "is_folder": false,
+                                "description": "Scans filesystem and updates/removes nodes accordingly",
+                                "status": "active",
+                                "children": []
                             }
                         ]
-                    },
-                    {
-                        "name": "PROJECT_LAYOUT_TREE.md",
-                        "path": "shared/project_layout_manager/PROJECT_LAYOUT_TREE.md",
-                        "is_folder": false,
-                        "description": "ASCII tree export file with editable comments",
-                        "status": "active",
-                        "children": []
-                    },
-                    {
-                        "name": "project_state.json",
-                        "path": "shared/project_layout_manager/project_state.json",
-                        "is_folder": false,
-                        "description": "Internal representation of the current project layout (updated automatically)",
-                        "status": "active",
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "name": "logging",
-                "path": "shared/logging",
-                "is_folder": true,
-                "description": "",
-                "status": "active",
-                "children": [
-                    {
-                        "name": "__init__.py",
-                        "path": "shared/logging/__init__.py",
-                        "is_folder": false,
-                        "description": "",
-                        "status": "active",
-                        "children": []
-                    },
-                    {
-                        "name": "log_config.py",
-                        "path": "shared/logging/log_config.py",
-                        "is_folder": false,
-                        "description": "Main interface: get_logger()",
-                        "status": "active",
-                        "children": []
-                    },
-                    {
-                        "name": "logger.py",
-                        "path": "shared/logging/logger.py",
-                        "is_folder": false,
-                        "description": "Log formatting, handlers, levels",
-                        "status": "active",
-                        "children": []
                     }
                 ]
             }
@@ -306,6 +297,14 @@
         "description": "Unit and integration tests across all project layers",
         "status": "active",
         "children": [
+            {
+                "name": "__init__.py",
+                "path": "tests/__init__.py",
+                "is_folder": false,
+                "description": "",
+                "status": "active",
+                "children": []
+            },
             {
                 "name": "generation",
                 "path": "tests/generation",
@@ -321,23 +320,6 @@
                         "status": "active",
                         "children": [
                             {
-                                "name": "generate_mesh",
-                                "path": "tests/generation/pipeline/generate_mesh",
-                                "is_folder": true,
-                                "description": "",
-                                "status": "active",
-                                "children": [
-                                    {
-                                        "name": "test_icosphere.py",
-                                        "path": "tests/generation/pipeline/generate_mesh/test_icosphere.py",
-                                        "is_folder": false,
-                                        "description": "Unit tests for IcosphereMeshStrategy and Planet mesh validity",
-                                        "status": "active",
-                                        "children": []
-                                    }
-                                ]
-                            },
-                            {
                                 "name": "export_planet",
                                 "path": "tests/generation/pipeline/export_planet",
                                 "is_folder": true,
@@ -349,6 +331,40 @@
                                         "path": "tests/generation/pipeline/export_planet/test_export_strategy.py",
                                         "is_folder": false,
                                         "description": "Tests that HDF5ExportStrategy correctly writes .planetbin files",
+                                        "status": "active",
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "seed_cratons",
+                                "path": "tests/generation/pipeline/seed_cratons",
+                                "is_folder": true,
+                                "description": "",
+                                "status": "active",
+                                "children": [
+                                    {
+                                        "name": "test_spaced_random.py",
+                                        "path": "tests/generation/pipeline/seed_cratons/test_spaced_random.py",
+                                        "is_folder": false,
+                                        "description": "",
+                                        "status": "active",
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "generate_mesh",
+                                "path": "tests/generation/pipeline/generate_mesh",
+                                "is_folder": true,
+                                "description": "",
+                                "status": "active",
+                                "children": [
+                                    {
+                                        "name": "test_icosphere.py",
+                                        "path": "tests/generation/pipeline/generate_mesh/test_icosphere.py",
+                                        "is_folder": false,
+                                        "description": "Unit tests for IcosphereMeshStrategy and Planet mesh validity",
                                         "status": "active",
                                         "children": []
                                     }
@@ -383,18 +399,18 @@
                 "status": "active",
                 "children": [
                     {
-                        "name": "__init__.py",
-                        "path": "tests/logging/__init__.py",
-                        "is_folder": false,
-                        "description": "",
-                        "status": "active",
-                        "children": []
-                    },
-                    {
                         "name": "test_log_config.py",
                         "path": "tests/logging/test_log_config.py",
                         "is_folder": false,
                         "description": "Tests for config setup, TRACE level, hooks",
+                        "status": "active",
+                        "children": []
+                    },
+                    {
+                        "name": "__init__.py",
+                        "path": "tests/logging/__init__.py",
+                        "is_folder": false,
+                        "description": "",
                         "status": "active",
                         "children": []
                     },
@@ -407,14 +423,6 @@
                         "children": []
                     }
                 ]
-            },
-            {
-                "name": "__init__.py",
-                "path": "tests/__init__.py",
-                "is_folder": false,
-                "description": "",
-                "status": "active",
-                "children": []
             },
             {
                 "name": "ui",
@@ -438,18 +446,18 @@
                                 "status": "active",
                                 "children": [
                                     {
-                                        "name": "test_mesh_render_data.py",
-                                        "path": "tests/ui/tools/mesh_viewer/test_mesh_render_data.py",
-                                        "is_folder": false,
-                                        "description": "Unit tests for MeshRenderData validation and shape constraints",
-                                        "status": "active",
-                                        "children": []
-                                    },
-                                    {
                                         "name": "test_planet_loader.py",
                                         "path": "tests/ui/tools/mesh_viewer/test_planet_loader.py",
                                         "is_folder": false,
                                         "description": "Tests the planet_loader with CLI-generated .planetbin files",
+                                        "status": "active",
+                                        "children": []
+                                    },
+                                    {
+                                        "name": "test_mesh_render_data.py",
+                                        "path": "tests/ui/tools/mesh_viewer/test_mesh_render_data.py",
+                                        "is_folder": false,
+                                        "description": "Unit tests for MeshRenderData validation and shape constraints",
                                         "status": "active",
                                         "children": []
                                     }
@@ -469,18 +477,26 @@
         "status": "active",
         "children": [
             {
-                "name": "PipelineDesign.md",
-                "path": "docs/PipelineDesign.md",
-                "is_folder": false,
-                "description": "High-level overview of all major pipelines (generation, game, UI)",
-                "status": "active",
-                "children": []
-            },
-            {
                 "name": "DevelopmentNotes.md",
                 "path": "docs/DevelopmentNotes.md",
                 "is_folder": false,
                 "description": "Development procedures and methods this project (should) follow",
+                "status": "active",
+                "children": []
+            },
+            {
+                "name": "Status.md",
+                "path": "docs/Status.md",
+                "is_folder": false,
+                "description": "Current in-progress work and critical conventions (like how to use the logger)",
+                "status": "active",
+                "children": []
+            },
+            {
+                "name": "PipelineDesign.md",
+                "path": "docs/PipelineDesign.md",
+                "is_folder": false,
+                "description": "High-level overview of all major pipelines (generation, game, UI)",
                 "status": "active",
                 "children": []
             },
@@ -508,14 +524,285 @@
                         "children": []
                     }
                 ]
+            }
+        ]
+    },
+    {
+        "name": "generation",
+        "path": "generation",
+        "is_folder": true,
+        "description": "Planet generation layer and all associated data and algorithms",
+        "status": "active",
+        "children": [
+            {
+                "name": "models",
+                "path": "generation/models",
+                "is_folder": true,
+                "description": "",
+                "status": "active",
+                "children": [
+                    {
+                        "name": "politics.py",
+                        "path": "generation/models/politics.py",
+                        "is_folder": false,
+                        "description": "Nations, PoliticalMap",
+                        "status": "active",
+                        "children": []
+                    },
+                    {
+                        "name": "tectonics.py",
+                        "path": "generation/models/tectonics.py",
+                        "is_folder": false,
+                        "description": "Craton, Plate, PlateMap",
+                        "status": "active",
+                        "children": []
+                    },
+                    {
+                        "name": "elevation.py",
+                        "path": "generation/models/elevation.py",
+                        "is_folder": false,
+                        "description": "Elevation, Drainage",
+                        "status": "active",
+                        "children": []
+                    },
+                    {
+                        "name": "planet.py",
+                        "path": "generation/models/planet.py",
+                        "is_folder": false,
+                        "description": "Main Planet container class",
+                        "status": "active",
+                        "children": []
+                    },
+                    {
+                        "name": "regions.py",
+                        "path": "generation/models/regions.py",
+                        "is_folder": false,
+                        "description": "Region names and boundaries",
+                        "status": "active",
+                        "children": []
+                    },
+                    {
+                        "name": "mesh.py",
+                        "path": "generation/models/mesh.py",
+                        "is_folder": false,
+                        "description": "MeshData (vertices, faces, adjacency)",
+                        "status": "active",
+                        "children": []
+                    },
+                    {
+                        "name": "climate.py",
+                        "path": "generation/models/climate.py",
+                        "is_folder": false,
+                        "description": "Temperature, Precipitation",
+                        "status": "active",
+                        "children": []
+                    },
+                    {
+                        "name": "biomes.py",
+                        "path": "generation/models/biomes.py",
+                        "is_folder": false,
+                        "description": "BiomeMap",
+                        "status": "active",
+                        "children": []
+                    }
+                ]
             },
             {
-                "name": "Status.md",
-                "path": "docs/Status.md",
+                "name": "generate_planet.py",
+                "path": "generation/generate_planet.py",
                 "is_folder": false,
-                "description": "Current in-progress work and critical conventions (like how to use the logger)",
+                "description": "CLI entry point: generate, load, and export Planet data",
                 "status": "active",
                 "children": []
+            },
+            {
+                "name": "pipeline",
+                "path": "generation/pipeline",
+                "is_folder": true,
+                "description": "Stage-by-stage modular planet generation components",
+                "status": "active",
+                "children": [
+                    {
+                        "name": "simulate_plate_motion",
+                        "path": "generation/pipeline/simulate_plate_motion",
+                        "is_folder": true,
+                        "description": "",
+                        "status": "active",
+                        "children": []
+                    },
+                    {
+                        "name": "simulate_climate",
+                        "path": "generation/pipeline/simulate_climate",
+                        "is_folder": true,
+                        "description": "",
+                        "status": "active",
+                        "children": []
+                    },
+                    {
+                        "name": "simulate_erosion",
+                        "path": "generation/pipeline/simulate_erosion",
+                        "is_folder": true,
+                        "description": "",
+                        "status": "active",
+                        "children": []
+                    },
+                    {
+                        "name": "populate_regions",
+                        "path": "generation/pipeline/populate_regions",
+                        "is_folder": true,
+                        "description": "",
+                        "status": "active",
+                        "children": []
+                    },
+                    {
+                        "name": "seed_cratons",
+                        "path": "generation/pipeline/seed_cratons",
+                        "is_folder": true,
+                        "description": "",
+                        "status": "active",
+                        "children": [
+                            {
+                                "name": "base.py",
+                                "path": "generation/pipeline/seed_cratons/base.py",
+                                "is_folder": false,
+                                "description": "Abstract base class: SeedCratonsStrategy",
+                                "status": "active",
+                                "children": []
+                            },
+                            {
+                                "name": "spaced_random.py",
+                                "path": "generation/pipeline/seed_cratons/spaced_random.py",
+                                "is_folder": false,
+                                "description": "Random placement with minimum distance enforcement",
+                                "status": "active",
+                                "children": []
+                            },
+                            {
+                                "name": "__init__.py",
+                                "path": "generation/pipeline/seed_cratons/__init__.py",
+                                "is_folder": false,
+                                "description": "Strategy loader",
+                                "status": "active",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "name": "generate_political_map",
+                        "path": "generation/pipeline/generate_political_map",
+                        "is_folder": true,
+                        "description": "",
+                        "status": "active",
+                        "children": []
+                    },
+                    {
+                        "name": "generate_biomes",
+                        "path": "generation/pipeline/generate_biomes",
+                        "is_folder": true,
+                        "description": "",
+                        "status": "active",
+                        "children": []
+                    },
+                    {
+                        "name": "export_planet",
+                        "path": "generation/pipeline/export_planet",
+                        "is_folder": true,
+                        "description": "Export the final Planet object to .planetbin format",
+                        "status": "active",
+                        "children": [
+                            {
+                                "name": "base.py",
+                                "path": "generation/pipeline/export_planet/base.py",
+                                "is_folder": false,
+                                "description": "BaseExportPlanetStrategy ABC for export stage structure",
+                                "status": "active",
+                                "children": []
+                            },
+                            {
+                                "name": "__init__.py",
+                                "path": "generation/pipeline/export_planet/__init__.py",
+                                "is_folder": false,
+                                "description": "Strategy selector for planet export (e.g. get_strategy(\"hdf5\"))",
+                                "status": "active",
+                                "children": []
+                            },
+                            {
+                                "name": "hdf5_export.py",
+                                "path": "generation/pipeline/export_planet/hdf5_export.py",
+                                "is_folder": false,
+                                "description": "HDF5ExportStrategy that writes a Planet to .planetbin format",
+                                "status": "active",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "name": "generate_mesh",
+                        "path": "generation/pipeline/generate_mesh",
+                        "is_folder": true,
+                        "description": "Icosphere/hex sphere mesh construction",
+                        "status": "active",
+                        "children": [
+                            {
+                                "name": "base.py",
+                                "path": "generation/pipeline/generate_mesh/base.py",
+                                "is_folder": false,
+                                "description": "BaseMeshStrategy Abstract Interface",
+                                "status": "active",
+                                "children": []
+                            },
+                            {
+                                "name": "__init__.py",
+                                "path": "generation/pipeline/generate_mesh/__init__.py",
+                                "is_folder": false,
+                                "description": "get_strategy(name: str) dispatcher",
+                                "status": "active",
+                                "children": []
+                            },
+                            {
+                                "name": "icosphere.py",
+                                "path": "generation/pipeline/generate_mesh/icosphere.py",
+                                "is_folder": false,
+                                "description": "IcosphereMeshStrategy",
+                                "status": "active",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "name": "generate_elevation",
+                        "path": "generation/pipeline/generate_elevation",
+                        "is_folder": true,
+                        "description": "",
+                        "status": "active",
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "name": "docs",
+                "path": "generation/docs",
+                "is_folder": true,
+                "description": "",
+                "status": "active",
+                "children": [
+                    {
+                        "name": "Design_SeedCratons.md",
+                        "path": "generation/docs/Design_SeedCratons.md",
+                        "is_folder": false,
+                        "description": "Detailed design document for the craton seeding pipeline",
+                        "status": "active",
+                        "children": []
+                    },
+                    {
+                        "name": "PlanetPipeline.md",
+                        "path": "generation/docs/PlanetPipeline.md",
+                        "is_folder": false,
+                        "description": "Detailed design document for the planet generation pipeline",
+                        "status": "active",
+                        "children": []
+                    }
+                ]
             }
         ]
     },
@@ -553,6 +840,32 @@
         "children": []
     },
     {
+        "name": "game_logic",
+        "path": "game_logic",
+        "is_folder": true,
+        "description": "Simulation and runtime logic layer for civilizations and world events",
+        "status": "active",
+        "children": [
+            {
+                "name": "docs",
+                "path": "game_logic/docs",
+                "is_folder": true,
+                "description": "",
+                "status": "active",
+                "children": [
+                    {
+                        "name": "GamePipeline.md",
+                        "path": "game_logic/docs/GamePipeline.md",
+                        "is_folder": false,
+                        "description": "Detailed design document for the game logic pipeline",
+                        "status": "active",
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "name": "logs",
         "path": "logs",
         "is_folder": true,
@@ -566,260 +879,6 @@
                 "description": "",
                 "status": "active",
                 "children": []
-            }
-        ]
-    },
-    {
-        "name": "generation",
-        "path": "generation",
-        "is_folder": true,
-        "description": "Planet generation layer and all associated data and algorithms",
-        "status": "active",
-        "children": [
-            {
-                "name": "generate_planet.py",
-                "path": "generation/generate_planet.py",
-                "is_folder": false,
-                "description": "CLI entry point: generate, load, and export Planet data",
-                "status": "active",
-                "children": []
-            },
-            {
-                "name": "docs",
-                "path": "generation/docs",
-                "is_folder": true,
-                "description": "",
-                "status": "active",
-                "children": [
-                    {
-                        "name": "Design_SeedCratons.md",
-                        "path": "generation/docs/Design_SeedCratons.md",
-                        "is_folder": false,
-                        "description": "Detailed design document for the craton seeding pipeline",
-                        "status": "active",
-                        "children": []
-                    },
-                    {
-                        "name": "PlanetPipeline.md",
-                        "path": "generation/docs/PlanetPipeline.md",
-                        "is_folder": false,
-                        "description": "Detailed design document for the planet generation pipeline",
-                        "status": "active",
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "name": "models",
-                "path": "generation/models",
-                "is_folder": true,
-                "description": "",
-                "status": "active",
-                "children": [
-                    {
-                        "name": "mesh.py",
-                        "path": "generation/models/mesh.py",
-                        "is_folder": false,
-                        "description": "MeshData (vertices, faces, adjacency)",
-                        "status": "active",
-                        "children": []
-                    },
-                    {
-                        "name": "elevation.py",
-                        "path": "generation/models/elevation.py",
-                        "is_folder": false,
-                        "description": "Elevation, Drainage",
-                        "status": "active",
-                        "children": []
-                    },
-                    {
-                        "name": "politics.py",
-                        "path": "generation/models/politics.py",
-                        "is_folder": false,
-                        "description": "Nations, PoliticalMap",
-                        "status": "active",
-                        "children": []
-                    },
-                    {
-                        "name": "regions.py",
-                        "path": "generation/models/regions.py",
-                        "is_folder": false,
-                        "description": "Region names and boundaries",
-                        "status": "active",
-                        "children": []
-                    },
-                    {
-                        "name": "climate.py",
-                        "path": "generation/models/climate.py",
-                        "is_folder": false,
-                        "description": "Temperature, Precipitation",
-                        "status": "active",
-                        "children": []
-                    },
-                    {
-                        "name": "biomes.py",
-                        "path": "generation/models/biomes.py",
-                        "is_folder": false,
-                        "description": "BiomeMap",
-                        "status": "active",
-                        "children": []
-                    },
-                    {
-                        "name": "tectonics.py",
-                        "path": "generation/models/tectonics.py",
-                        "is_folder": false,
-                        "description": "Craton, Plate, PlateMap",
-                        "status": "active",
-                        "children": []
-                    },
-                    {
-                        "name": "planet.py",
-                        "path": "generation/models/planet.py",
-                        "is_folder": false,
-                        "description": "Main Planet container class",
-                        "status": "active",
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "name": "pipeline",
-                "path": "generation/pipeline",
-                "is_folder": true,
-                "description": "Stage-by-stage modular planet generation components",
-                "status": "active",
-                "children": [
-                    {
-                        "name": "simulate_plate_motion",
-                        "path": "generation/pipeline/simulate_plate_motion",
-                        "is_folder": true,
-                        "description": "",
-                        "status": "active",
-                        "children": []
-                    },
-                    {
-                        "name": "export_planet",
-                        "path": "generation/pipeline/export_planet",
-                        "is_folder": true,
-                        "description": "Export the final Planet object to .planetbin format",
-                        "status": "active",
-                        "children": [
-                            {
-                                "name": "__init__.py",
-                                "path": "generation/pipeline/export_planet/__init__.py",
-                                "is_folder": false,
-                                "description": "Strategy selector for planet export (e.g. get_strategy(\"hdf5\"))",
-                                "status": "active",
-                                "children": []
-                            },
-                            {
-                                "name": "base.py",
-                                "path": "generation/pipeline/export_planet/base.py",
-                                "is_folder": false,
-                                "description": "BaseExportPlanetStrategy ABC for export stage structure",
-                                "status": "active",
-                                "children": []
-                            },
-                            {
-                                "name": "hdf5_export.py",
-                                "path": "generation/pipeline/export_planet/hdf5_export.py",
-                                "is_folder": false,
-                                "description": "HDF5ExportStrategy that writes a Planet to .planetbin format",
-                                "status": "active",
-                                "children": []
-                            }
-                        ]
-                    },
-                    {
-                        "name": "generate_political_map",
-                        "path": "generation/pipeline/generate_political_map",
-                        "is_folder": true,
-                        "description": "",
-                        "status": "active",
-                        "children": []
-                    },
-                    {
-                        "name": "seed_cratons",
-                        "path": "generation/pipeline/seed_cratons",
-                        "is_folder": true,
-                        "description": "",
-                        "status": "active",
-                        "children": []
-                    },
-                    {
-                        "name": "generate_elevation",
-                        "path": "generation/pipeline/generate_elevation",
-                        "is_folder": true,
-                        "description": "",
-                        "status": "active",
-                        "children": []
-                    },
-                    {
-                        "name": "simulate_climate",
-                        "path": "generation/pipeline/simulate_climate",
-                        "is_folder": true,
-                        "description": "",
-                        "status": "active",
-                        "children": []
-                    },
-                    {
-                        "name": "populate_regions",
-                        "path": "generation/pipeline/populate_regions",
-                        "is_folder": true,
-                        "description": "",
-                        "status": "active",
-                        "children": []
-                    },
-                    {
-                        "name": "generate_biomes",
-                        "path": "generation/pipeline/generate_biomes",
-                        "is_folder": true,
-                        "description": "",
-                        "status": "active",
-                        "children": []
-                    },
-                    {
-                        "name": "simulate_erosion",
-                        "path": "generation/pipeline/simulate_erosion",
-                        "is_folder": true,
-                        "description": "",
-                        "status": "active",
-                        "children": []
-                    },
-                    {
-                        "name": "generate_mesh",
-                        "path": "generation/pipeline/generate_mesh",
-                        "is_folder": true,
-                        "description": "Icosphere/hex sphere mesh construction",
-                        "status": "active",
-                        "children": [
-                            {
-                                "name": "icosphere.py",
-                                "path": "generation/pipeline/generate_mesh/icosphere.py",
-                                "is_folder": false,
-                                "description": "IcosphereMeshStrategy",
-                                "status": "active",
-                                "children": []
-                            },
-                            {
-                                "name": "base.py",
-                                "path": "generation/pipeline/generate_mesh/base.py",
-                                "is_folder": false,
-                                "description": "BaseMeshStrategy Abstract Interface",
-                                "status": "active",
-                                "children": []
-                            },
-                            {
-                                "name": "__init__.py",
-                                "path": "generation/pipeline/generate_mesh/__init__.py",
-                                "is_folder": false,
-                                "description": "get_strategy(name: str) dispatcher",
-                                "status": "active",
-                                "children": []
-                            }
-                        ]
-                    }
-                ]
             }
         ]
     },
@@ -862,38 +921,6 @@
                         "status": "active",
                         "children": [
                             {
-                                "name": "planet_loader.py",
-                                "path": "ui/tools/mesh_viewer/planet_loader.py",
-                                "is_folder": false,
-                                "description": "Load .planetbin \u2192 MeshRenderData",
-                                "status": "active",
-                                "children": []
-                            },
-                            {
-                                "name": "launch_viewer.py",
-                                "path": "ui/tools/mesh_viewer/launch_viewer.py",
-                                "is_folder": false,
-                                "description": "CLI entrypoint for the standalone viewer",
-                                "status": "active",
-                                "children": []
-                            },
-                            {
-                                "name": "gl_widget.py",
-                                "path": "ui/tools/mesh_viewer/gl_widget.py",
-                                "is_folder": false,
-                                "description": "Contains PlanetGLWidget (QOpenGLWidget)",
-                                "status": "active",
-                                "children": []
-                            },
-                            {
-                                "name": "viewer_app.py",
-                                "path": "ui/tools/mesh_viewer/viewer_app.py",
-                                "is_folder": false,
-                                "description": "Contains PlanetViewerApp (QMainWindow)",
-                                "status": "active",
-                                "children": []
-                            },
-                            {
                                 "name": "overlays",
                                 "path": "ui/tools/mesh_viewer/overlays",
                                 "is_folder": true,
@@ -909,6 +936,14 @@
                                         "children": []
                                     },
                                     {
+                                        "name": "__init__.py",
+                                        "path": "ui/tools/mesh_viewer/overlays/__init__.py",
+                                        "is_folder": false,
+                                        "description": "Overlay auto-registration (ALL_OVERLAYS)",
+                                        "status": "active",
+                                        "children": []
+                                    },
+                                    {
                                         "name": "elevation_overlay.py",
                                         "path": "ui/tools/mesh_viewer/overlays/elevation_overlay.py",
                                         "is_folder": false,
@@ -917,10 +952,18 @@
                                         "children": []
                                     },
                                     {
-                                        "name": "base.py",
-                                        "path": "ui/tools/mesh_viewer/overlays/base.py",
+                                        "name": "region_overlay.py",
+                                        "path": "ui/tools/mesh_viewer/overlays/region_overlay.py",
                                         "is_folder": false,
-                                        "description": "Overlay base class defining required interface",
+                                        "description": "(WIP) Future overlay for highlighting political regions",
+                                        "status": "active",
+                                        "children": []
+                                    },
+                                    {
+                                        "name": "craton_overlay.py",
+                                        "path": "ui/tools/mesh_viewer/overlays/craton_overlay.py",
+                                        "is_folder": false,
+                                        "description": "(WIP) Future overlay for showing craton size and placement",
                                         "status": "active",
                                         "children": []
                                     },
@@ -933,28 +976,52 @@
                                         "children": []
                                     },
                                     {
-                                        "name": "__init__.py",
-                                        "path": "ui/tools/mesh_viewer/overlays/__init__.py",
+                                        "name": "base.py",
+                                        "path": "ui/tools/mesh_viewer/overlays/base.py",
                                         "is_folder": false,
-                                        "description": "Overlay auto-registration (ALL_OVERLAYS)",
-                                        "status": "active",
-                                        "children": []
-                                    },
-                                    {
-                                        "name": "region_overlay.py",
-                                        "path": "ui/tools/mesh_viewer/overlays/region_overlay.py",
-                                        "is_folder": false,
-                                        "description": "(WIP) Future overlay for highlighting political regions",
+                                        "description": "Overlay base class defining required interface",
                                         "status": "active",
                                         "children": []
                                     }
                                 ]
                             },
                             {
+                                "name": "launch_viewer.py",
+                                "path": "ui/tools/mesh_viewer/launch_viewer.py",
+                                "is_folder": false,
+                                "description": "CLI entrypoint for the standalone viewer",
+                                "status": "active",
+                                "children": []
+                            },
+                            {
+                                "name": "viewer_app.py",
+                                "path": "ui/tools/mesh_viewer/viewer_app.py",
+                                "is_folder": false,
+                                "description": "Contains PlanetViewerApp (QMainWindow)",
+                                "status": "active",
+                                "children": []
+                            },
+                            {
+                                "name": "gl_widget.py",
+                                "path": "ui/tools/mesh_viewer/gl_widget.py",
+                                "is_folder": false,
+                                "description": "Contains PlanetGLWidget (QOpenGLWidget)",
+                                "status": "active",
+                                "children": []
+                            },
+                            {
                                 "name": "overlay_manager.py",
                                 "path": "ui/tools/mesh_viewer/overlay_manager.py",
                                 "is_folder": false,
                                 "description": "",
+                                "status": "active",
+                                "children": []
+                            },
+                            {
+                                "name": "planet_loader.py",
+                                "path": "ui/tools/mesh_viewer/planet_loader.py",
+                                "is_folder": false,
+                                "description": "Load .planetbin \u2192 MeshRenderData",
                                 "status": "active",
                                 "children": []
                             },
@@ -969,23 +1036,6 @@
                         ]
                     }
                 ]
-            }
-        ]
-    },
-    {
-        "name": "scripts",
-        "path": "scripts",
-        "is_folder": true,
-        "description": "",
-        "status": "active",
-        "children": [
-            {
-                "name": "structure_dump.py",
-                "path": "scripts/structure_dump.py",
-                "is_folder": false,
-                "description": "(OLD) The script to auto-update this file.",
-                "status": "active",
-                "children": []
             }
         ]
     }
