@@ -13,8 +13,9 @@ class MeshRenderData:
     """
     vertices: np.ndarray         # Shape: (n, 3)
     faces: np.ndarray            # Shape: (m, 3), indices into vertices
-    face_ids: Optional[np.ndarray] = None     # Shape: (m,)
-    elevation: Optional[np.ndarray] = None    # Shape: (n,) or (m,)
+    face_ids: Optional[np.ndarray] = None   # Shape: (m,)
+    elevation: Optional[np.ndarray] = None  # Shape: (n,) or (m,)
+    planet: Optional["Planet"] = None       # Full Planet object for overlay/debugging access
 
     def __post_init__(self):
         assert self.vertices.ndim == 2 and self.vertices.shape[1] == 3, \

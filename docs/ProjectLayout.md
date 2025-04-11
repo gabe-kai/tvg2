@@ -157,7 +157,7 @@
 │           ├── gl_widget.py                    # Contains PlanetGLWidget (QOpenGLWidget)
 │           ├── launch_viewer.py                # CLI entrypoint for the standalone viewer
 │           ├── mesh_render_data.py             # MeshRenderData class (DTO for rendering)
-│           ├── overlay_manager.py
+│           ├── overlay_manager.py              # Manages active overlays in the viewer.
 │           ├── planet_loader.py                # Load .planetbin → MeshRenderData
 │           └── viewer_app.py                   # Contains PlanetViewerApp (QMainWindow)
 │           

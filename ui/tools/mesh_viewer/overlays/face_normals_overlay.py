@@ -18,7 +18,7 @@ class FaceNormalsOverlay(Overlay):
     """
 
     def __init__(self):
-        self.enabled = True
+        super().__init__()
         self.mesh_data: MeshRenderData | None = None
 
     def get_name(self):
@@ -30,17 +30,11 @@ class FaceNormalsOverlay(Overlay):
     def get_description(self):
         return "Displays outward-pointing normals from face centroids (camera-facing only)."
 
-    def is_enabled(self):
-        return self.enabled
-
-    def set_enabled(self, value: bool):
-        self.enabled = value
-
     def update_data(self, mesh_data):
         self.mesh_data = mesh_data
 
     def render(self, gl_widget):
-        if not self.enabled or self.mesh_data is None:
+        if not self.is_enabled() or self.mesh_data is None:
             return
 
         vertices = self.mesh_data.vertices

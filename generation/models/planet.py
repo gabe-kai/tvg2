@@ -89,6 +89,18 @@ class Planet:
                     self.mesh.face_ids = np.arange(self.mesh.faces.shape[0], dtype=np.int32)
                 mesh_grp.create_dataset("face_ids", data=self.mesh.face_ids)
 
+            # Cratons
+            if self.cratons:
+                craton_grp = f.create_group("cratons")
+                for craton in self.cratons:
+                    cgrp = craton_grp.create_group(str(craton.id))
+                    cgrp.attrs["center_index"] = craton.center_index
+                    cgrp.attrs["id"] = craton.id
+                    if craton.name:
+                        cgrp.attrs["name"] = craton.name
+                    if craton.face_ids:
+                        cgrp.create_dataset("face_ids", data=np.array(craton.face_ids, dtype=np.int32))
+
     @staticmethod
     def load(path: str) -> "Planet":
         """Load a Planet from a .planetbin HDF5 file."""
@@ -115,9 +127,21 @@ class Planet:
 
                 mesh = MeshData(vertices=vertices, faces=faces, adjacency=adjacency, face_ids=face_ids)
 
+            cratons = []
+            if "cratons" in f:
+                craton_grp = f["cratons"]
+                for key in craton_grp:
+                    cgrp = craton_grp[key]
+                    center_index = int(cgrp.attrs["center_index"])
+                    craton_id = int(cgrp.attrs["id"])
+                    name = cgrp.attrs.get("name", None)
+                    face_ids = cgrp["face_ids"][:] if "face_ids" in cgrp else None
+                    cratons.append(Craton(center_index=center_index, id=craton_id, face_ids=face_ids, name=name))
+
             return Planet(
                 radius=radius,
                 subdivision_level=subdivision_level,
                 seed=seed,
-                mesh=mesh
+                mesh=mesh,
+                cratons=cratons
             )

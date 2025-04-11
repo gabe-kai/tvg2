@@ -39,7 +39,7 @@ class PlanetGLWidget(QOpenGLWidget):
         self.rotation_locked = False
 
         # Rendering mode
-        self.render_mode = RenderMode.WIREFRAME
+        self.render_mode = RenderMode.SUNLIT
 
         # Auto-rotation
         self.auto_rotate = False

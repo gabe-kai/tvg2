@@ -13,7 +13,7 @@ class Overlay(ABC):
     """
 
     def __init__(self):
-        self._enabled = True
+        self._enabled = False
 
     def set_enabled(self, enabled: bool) -> None:
         """Enable or disable this overlay."""
