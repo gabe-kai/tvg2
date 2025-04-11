@@ -19,6 +19,7 @@
 [X] Minimal working viewer that can display a mesh
 [X] Add modular overlay system to visualize mesh metadata
 [ ] Plan & Implement the Craton-Seeding pipeline step
+[ ] Refactor the generate_mesh step to calculate and store face centroids. Note that they will need to be updated after mesh deformations.
 [ ] Enable live debug viewing during planet generation or standalone use
 
 ---

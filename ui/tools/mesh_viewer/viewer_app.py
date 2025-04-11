@@ -9,6 +9,7 @@ from ui.tools.mesh_viewer.mesh_render_data import MeshRenderData
 from shared.logging.logger import get_logger
 from ui.tools.mesh_viewer.overlays.face_index_overlay import FaceIndexOverlay
 from ui.tools.mesh_viewer.overlays.face_normals_overlay import FaceNormalsOverlay
+from ui.tools.mesh_viewer.overlays.craton_overlay import CratonOverlay
 
 log = get_logger(__name__)
 
@@ -34,6 +35,9 @@ class PlanetViewerApp(QMainWindow):
         self.face_normals_overlay = FaceNormalsOverlay()
         self.mesh_widget.overlay_manager.register(self.face_normals_overlay)
 
+        self.craton_overlay = CratonOverlay()
+        self.mesh_widget.overlay_manager.register(self.craton_overlay)
+
         self._init_toolbar()
         log.info("Viewer window initialized.")
 
@@ -45,6 +49,11 @@ class PlanetViewerApp(QMainWindow):
     def _toggle_face_normals_overlay(self, enabled: bool):
         """Enable/disable the Face Normals overlay and refresh the view."""
         self.mesh_widget.overlay_manager.set_overlay_enabled("Face Normals", enabled)
+        self.mesh_widget.update()
+
+    def _toggle_craton_overlay(self, enabled: bool):
+        """Enable/disable the Craton overlay and refresh the view."""
+        self.mesh_widget.overlay_manager.set_overlay_enabled("Cratons", enabled)
         self.mesh_widget.update()
 
     def _init_toolbar(self):
@@ -96,3 +105,10 @@ class PlanetViewerApp(QMainWindow):
         self.face_normals_action.setChecked(self.face_normals_overlay.is_enabled())
         self.face_normals_action.toggled.connect(lambda checked: self._toggle_face_normals_overlay(checked))
         toolbar.addAction(self.face_normals_action)
+
+        # Craton overlay toggle
+        self.craton_overlay_action = QAction("Show Cratons", self)
+        self.craton_overlay_action.setCheckable(True)
+        self.craton_overlay_action.setChecked(self.craton_overlay.is_enabled())
+        self.craton_overlay_action.toggled.connect(lambda checked: self._toggle_craton_overlay(checked))
+        toolbar.addAction(self.craton_overlay_action)

@@ -5,6 +5,8 @@ from logging.handlers import RotatingFileHandler
 import os
 import sys
 from typing import Callable, List
+from pathlib import Path
+
 
 # === Centralized Log Levels ===
 class LogLevel:
@@ -74,8 +76,10 @@ def create_console_handler():
     return handler
 
 def create_file_handler(log_dir="logs", filename="vassal.log"):
-    os.makedirs(log_dir, exist_ok=True)
-    path = os.path.join(log_dir, filename)
+    project_root = Path(__file__).resolve().parents[2]
+    log_dir = project_root / log_dir
+    log_dir.mkdir(parents=True, exist_ok=True)
+    path = log_dir / filename
     handler = RotatingFileHandler(
         path,
         maxBytes=5 * 1024 * 1024,

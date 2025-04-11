@@ -83,6 +83,8 @@ class FaceIndexOverlay(Overlay):
             visible.append((z, idx, (x, y)))
 
         visible.sort(key=lambda t: t[0])
+        # Display up to 94 face IDs closest to the camera.
+        # TODO: Replace this hardcoded value with a user-configurable setting (e.g., a slider in the UI).
         for z, idx, (x, y) in visible[:94]:
             label = str(int(self.face_ids[idx]))
             painter.setPen(QColor(0, 0, 128))

@@ -36,7 +36,8 @@ class OverlayManager:
     def get_overlay_metadata(self) -> List[dict]:
         """
         Return structured metadata for all overlays:
-        name, category, description, enabled state.
+        Includes name, category, description, and enabled state.
+        Falls back to default values if an overlay omits category or description.
         """
         return [
             {

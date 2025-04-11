@@ -9,12 +9,15 @@
 │   
 ├── docs/
 │   ├── step_plans/
-│   │   └── IcosphereViewerSession2.md
-│   │   
-│   ├── DevelopmentNotes.md                 # Development procedures and methods this project (should) follow
-│   ├── PipelineDesign.md                   # High-level overview of all major pipelines (generation, game, UI)
-│   ├── ProjectLayout.md                    # This file
-│   └── Status.md                           # Current in-progress work and critical conventions (like how to use the logger)
+│   │   ├── done/
+│   │   └── todo/
+│   │       ├── IcosphereViewerSession2.md      # Build a stand-alone mesh viewer to debug planet creation
+│   │       └── refactor_generate_planet.md     # Plan to split the CLI commands out of generate_planet
+│   │       
+│   ├── DevelopmentNotes.md                     # Development procedures and methods this project (should) follow
+│   ├── PipelineDesign.md                       # High-level overview of all major pipelines (generation, game, UI)
+│   ├── ProjectLayout.md                        # This file
+│   └── Status.md                               # Current in-progress work and critical conventions (like how to use the logger)
 │   
 ├── game_logic/                 # Simulation and runtime logic layer for civilizations and world events
 │   └── docs/
@@ -51,6 +54,10 @@
 │   │   ├── generate_political_map/
 │   │   ├── populate_regions/
 │   │   ├── seed_cratons/
+│   │   │   ├── __init__.py             # Strategy loader
+│   │   │   ├── base.py                 # Abstract base class: SeedCratonsStrategy
+│   │   │   └── spaced_random.py        # Random placement with minimum distance enforcement
+│   │   │   
 │   │   ├── simulate_climate/
 │   │   ├── simulate_erosion/
 │   │   └── simulate_plate_motion/
@@ -113,8 +120,11 @@
 │   │       ├── export_planet/
 │   │       │   └── test_export_strategy.py     # Tests that HDF5ExportStrategy correctly writes .planetbin files
 │   │       │   
-│   │       └── generate_mesh/
-│   │           └── test_icosphere.py           # Unit tests for IcosphereMeshStrategy and Planet mesh validity
+│   │       ├── generate_mesh/
+│   │       │   └── test_icosphere.py           # Unit tests for IcosphereMeshStrategy and Planet mesh validity
+│   │       │   
+│   │       └── seed_cratons/
+│   │           └── test_spaced_random.py
 │   │           
 │   ├── logging/                                # Logging config and logger interface tests
 │   │   ├── __init__.py
@@ -138,6 +148,7 @@
 │           ├── overlays/
 │           │   ├── __init__.py                 # Overlay auto-registration (ALL_OVERLAYS)
 │           │   ├── base.py                     # Overlay base class defining required interface
+│           │   ├── craton_overlay.py           # (WIP) Future overlay for showing craton size and placement
 │           │   ├── elevation_overlay.py        # (WIP) Future overlay for showing elevation shading
 │           │   ├── face_index_overlay.py       # Displays numeric face IDs at centroids (via QPainter)
 │           │   ├── face_normals_overlay.py     # Draws face normals for visible geometry (via OpenGL)
@@ -146,7 +157,7 @@
 │           ├── gl_widget.py                    # Contains PlanetGLWidget (QOpenGLWidget)
 │           ├── launch_viewer.py                # CLI entrypoint for the standalone viewer
 │           ├── mesh_render_data.py             # MeshRenderData class (DTO for rendering)
-│           ├── overlay_manager.py
+│           ├── overlay_manager.py              # Manages active overlays in the viewer.
 │           ├── planet_loader.py                # Load .planetbin → MeshRenderData
 │           └── viewer_app.py                   # Contains PlanetViewerApp (QMainWindow)
 │           
