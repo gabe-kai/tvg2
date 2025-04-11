@@ -88,6 +88,8 @@ class Planet:
                     print("Generating face IDs before export...")
                     self.mesh.face_ids = np.arange(self.mesh.faces.shape[0], dtype=np.int32)
                 mesh_grp.create_dataset("face_ids", data=self.mesh.face_ids)
+                if self.mesh.face_centers is not None:
+                    mesh_grp.create_dataset("face_centers", data=self.mesh.face_centers)
 
             # Cratons
             if self.cratons:
@@ -115,6 +117,7 @@ class Planet:
                 vertices = mesh_grp["vertices"][:]
                 faces = mesh_grp["faces"][:]
                 face_ids = mesh_grp["face_ids"][:] if "face_ids" in mesh_grp else None
+                face_centers = mesh_grp["face_centers"][:] if "face_centers" in mesh_grp else None
 
                 # Reconstruct adjacency dict
                 lengths = mesh_grp["adjacency_lengths"][:]
@@ -125,7 +128,7 @@ class Planet:
                     adjacency[i] = flat[cursor:cursor+length].tolist()
                     cursor += length
 
-                mesh = MeshData(vertices=vertices, faces=faces, adjacency=adjacency, face_ids=face_ids)
+                mesh = MeshData(vertices=vertices, faces=faces, adjacency=adjacency, face_ids=face_ids, face_centers=face_centers)
 
             cratons = []
             if "cratons" in f:

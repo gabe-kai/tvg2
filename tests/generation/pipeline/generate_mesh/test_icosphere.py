@@ -8,6 +8,10 @@ from generation.pipeline.generate_mesh import get_strategy
 
 
 def test_icosphere_mesh_generation():
+    """
+    Generate a basic icosphere and validate mesh geometry and structure,
+    including newly added face_centers field.
+    """
     planet = Planet(radius=1.0, subdivision_level=2, seed=42)
     strategy = get_strategy("icosphere")
     planet = strategy.run(planet)
@@ -24,6 +28,23 @@ def test_icosphere_mesh_generation():
     # Check all face indices are valid
     num_vertices = mesh.vertices.shape[0]
     assert np.all(mesh.faces < num_vertices), "All face indices must be valid vertex indices"
+
+    # Check face centers
+    assert mesh.face_centers is not None, "face_centers should be computed and present"
+    assert mesh.face_centers.shape == (mesh.faces.shape[0], 3), "face_centers should match (num_faces, 3)"
+
+    # Spot check: each face center should lie roughly in-plane with the triangle
+    for i in range(5):
+        face = mesh.faces[i]
+        triangle = mesh.vertices[face]  # shape (3, 3)
+        center = mesh.face_centers[i]  # shape (3,)
+        # Compute barycentric weights (should be all positive and ~1/3)
+        v0, v1, v2 = triangle
+        normal = np.cross(v1 - v0, v2 - v0)
+        normal /= np.linalg.norm(normal)
+        # Center should lie close to the triangle plane
+        plane_dist = np.dot(center - v0, normal)
+        assert abs(plane_dist) < 1e-6, f"Face center {i} not in triangle plane (dist={plane_dist})"
 
     # Check adjacency map
     assert isinstance(mesh.adjacency, dict)
