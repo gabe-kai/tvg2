@@ -47,11 +47,35 @@ Example stage entries:
 - **Overlay Note:** Consider adding a `CratonOverlay` that visualizes craton placement and labels by ID or type.
 
 ### 3. `SimulatePlateMotion`
-- Expands tectonic plates from cratons
-- Assigns motion vectors, boundaries, and interaction types
-- Outputs: list of plates, tectonic map per face
-- **Overlay Note:** This stage supports overlays like `PlateIDOverlay`, `PlateVectorOverlay`, or plate boundary highlights.
+This stage has been expanded into several distinct substeps to improve modularity and control over tectonic behavior:
 
+#### 3.1 Expand Craton Regions
+- Grows each craton from its seed face into a stable core region.
+- May use BFS, terrain-aware constraints, or fixed-radius growth.
+- Outputs: list of craton region face IDs or craton membership map.
+
+#### 3.2 Seed Plates From Cratons
+- Initializes one tectonic plate per craton.
+- Assigns plate IDs based on craton centers or regions.
+- Outputs: list of plate objects with craton linkage.
+
+#### 3.3 Grow Plates
+- Expands plate territories until all faces are assigned.
+- Uses BFS or weighted growth based on face availability.
+- Outputs: per-face plate ID map.
+
+#### 3.4 Detect Plate Boundaries
+- Identifies neighboring faces that belong to different plates.
+- Outputs: list or map of plate boundaries, with adjacency data.
+
+#### 3.5 Assign Plate Motion Vectors
+- Assigns motion vectors (direction + speed) to each plate.
+- These vectors are later used to simulate tectonic interactions.
+- Outputs: per-plate motion data.
+
+**Overlay Note:** These substeps support overlays like `CratonOverlay`, `PlateIDOverlay`, `PlateVectorOverlay`, and `PlateBoundaryOverlay`.
+
+---
 ### 4. `GenerateElevation`
 - Uses tectonic context to deform terrain (mountains, rifts, trenches)
 - Outputs: elevation per face or vertex

@@ -10,14 +10,17 @@
 ├── docs/
 │   ├── step_plans/
 │   │   ├── done/
+│   │   │   ├── Design_SeedCratons.md                       # Detailed design document for the craton seeding pipeline
+│   │   │   └── IcosphereViewerOverlays.md                  # Build overlay system for the stand-alone mesh viewer
+│   │   │   
 │   │   └── todo/
-│   │       ├── IcosphereViewerSession2.md      # Build a stand-alone mesh viewer to debug planet creation
-│   │       └── refactor_generate_planet.md     # Plan to split the CLI commands out of generate_planet
+│   │       ├── Implement_SimulatePlateMotion.md
+│   │       └── Refactor_GeneratePlanet_Split_CLIargs.md
 │   │       
-│   ├── DevelopmentNotes.md                     # Development procedures and methods this project (should) follow
-│   ├── PipelineDesign.md                       # High-level overview of all major pipelines (generation, game, UI)
-│   ├── ProjectLayout.md                        # This file
-│   └── Status.md                               # Current in-progress work and critical conventions (like how to use the logger)
+│   ├── DevelopmentNotes.md                                 # Development procedures and methods this project (should) follow
+│   ├── PipelineDesign.md                                   # High-level overview of all major pipelines (generation, game, UI)
+│   ├── ProjectLayout.md                                    # This file
+│   └── Status.md                                           # Current in-progress work and critical conventions (like how to use the logger)
 │   
 ├── game_logic/                 # Simulation and runtime logic layer for civilizations and world events
 │   └── docs/
@@ -25,7 +28,6 @@
 │       
 ├── generation/                         # Planet generation layer and all associated data and algorithms
 │   ├── docs/
-│   │   ├── Design_SeedCratons.md       # Detailed design document for the craton seeding pipeline
 │   │   └── PlanetPipeline.md           # Detailed design document for the planet generation pipeline
 │   │   
 │   ├── models/

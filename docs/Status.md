@@ -11,14 +11,15 @@
 - 2025.04.07:  Built Overlay system. Built Toolbar: wireframe, rotation lock, & auto-rotate.
 - 2025.04.08:  Added Face ID overlay. Added Icosphere Mesh relaxer.
 - 2025.04.09:  Updated Flat-Shading mode, added Sunlit-Shaded mode. Added a Normals overlay.
+- 2025.04.10:  Build seed_cratons step to the generate_planet pipeline.
+- 2025.04.11:  Built the cratons_overlay for the mesh-viewer. Changed all overlays to start unchecked.
 
 ---
 
 ## In-Progress and Next-Up
 
-[X] Minimal working viewer that can display a mesh
-[X] Add modular overlay system to visualize mesh metadata
-[ ] Plan & Implement the Craton-Seeding pipeline step
+[X] Plan & Implement the Craton-Seeding pipeline step & debug overlay for mesh-viewer
+[ ] Refactor generate_planet to split the CLI commands into a new module.
 [ ] Refactor the generate_mesh step to calculate and store face centroids. Note that they will need to be updated after mesh deformations.
 [ ] Enable live debug viewing during planet generation or standalone use
 

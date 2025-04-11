@@ -180,7 +180,7 @@ planet = get_strategy("spaced_random").run(planet)
 - [X] File structure added
 - [X] Strategy base + spaced random impl complete
 - [X] Craton data stored in Planet
-- [ ] Overlay registered and visible
+- [X] Overlay registered and visible
 - [X] Unit tests passing
 - [X] Pipeline integration tested
 
