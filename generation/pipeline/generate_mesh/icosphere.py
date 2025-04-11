@@ -60,16 +60,21 @@ class IcosphereMeshStrategy(BaseMeshStrategy):
             log.debug("Subdivision %d complete: %d vertices, %d faces", i + 1, len(vertices), len(faces))
 
         # Project all vertices onto the sphere of given radius
-        vertices = normalize(vertices) * planet.radius
+        if planet.radius == 0.0:
+            vertices[:] = 0.0
+        else:
+            vertices = normalize(vertices) * planet.radius
 
         # Smooth vertex positions to reduce local distortion
-        vertices = self._relax_vertices(vertices, faces, iterations=10, radius=planet.radius)
+        if planet.radius != 0.0:
+            vertices = self._relax_vertices(vertices, faces, iterations=10, radius=planet.radius)
 
         # Build face adjacency (used for mesh navigation, not smoothing)
         adjacency = self._build_adjacency(faces)
 
         face_ids = np.arange(faces.shape[0], dtype=np.int32)
-        planet.mesh = MeshData(vertices=vertices, faces=faces, adjacency=adjacency, face_ids=face_ids)
+        face_centers = vertices[faces].mean(axis=1)
+        planet.mesh = MeshData(vertices=vertices, faces=faces, adjacency=adjacency, face_ids=face_ids, face_centers=face_centers)
 
         log.info("Icosphere mesh generation complete. Total vertices: %d, faces: %d", len(vertices), len(faces))
         return planet
