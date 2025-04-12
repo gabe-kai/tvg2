@@ -66,13 +66,15 @@ class CratonOverlay(Overlay):
         Determine whether this overlay should render in the given mode.
         Requires craton data and a non-wireframe render mode.
         """
+        print(f"[CratonOverlay] is_visible check — mode: {render_mode}")
+
         return (
             hasattr(data, "planet") and hasattr(data.planet, "cratons")
             and data.planet.cratons
-            and render_mode in ("flat", "sunlit")  # skip wireframe
+            and render_mode in ("flat_shaded", "sunlit")  # skip wireframe
         )
 
-    def render_faces(self, data, mesh, render_mode):
+    def render_faces(self, data):
         """
         Return a mapping of face index → color for potential future face highlight support.
         Currently unused by the viewer, but retained for extensibility.

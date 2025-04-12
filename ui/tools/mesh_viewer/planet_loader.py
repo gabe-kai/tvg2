@@ -7,6 +7,7 @@ from shared.logging.logger import get_logger
 
 log = get_logger(__name__)
 
+
 def load_mesh_render_data(path: str | Path) -> MeshRenderData:
     """
     Load a .planetbin file and extract mesh data for rendering.
