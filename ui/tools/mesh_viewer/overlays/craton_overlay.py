@@ -66,8 +66,6 @@ class CratonOverlay(Overlay):
         Determine whether this overlay should render in the given mode.
         Requires craton data and a non-wireframe render mode.
         """
-        print(f"[CratonOverlay] is_visible check — mode: {render_mode}")
-
         return (
             hasattr(data, "planet") and hasattr(data.planet, "cratons")
             and data.planet.cratons
