@@ -11,6 +11,7 @@
 │   ├── step_plans/
 │   │   ├── done/
 │   │   │   ├── Design_SeedCratons.md                       # Detailed design document for the craton seeding pipeline
+│   │   │   ├── IcosphereViewer.md
 │   │   │   └── IcosphereViewerOverlays.md                  # Build overlay system for the stand-alone mesh viewer
 │   │   │   
 │   │   └── todo/
@@ -27,6 +28,12 @@
 │       └── GamePipeline.md     # Detailed design document for the game logic pipeline
 │       
 ├── generation/                         # Planet generation layer and all associated data and algorithms
+│   ├── cli/
+│   │   ├── __init__.py
+│   │   ├── argument_parser.py          # Parses command-line arguments and merges them with config file data
+│   │   ├── constants.py                # Defines per-stage parameter schemas with types and defaults
+│   │   └── parameter_merge.py          # Resolves final parameter values: CLI > config > schema fallback
+│   │   
 │   ├── docs/
 │   │   └── PlanetPipeline.md           # Detailed design document for the planet generation pipeline
 │   │   
@@ -62,7 +69,13 @@
 │   │   │   
 │   │   ├── simulate_climate/
 │   │   ├── simulate_erosion/
-│   │   └── simulate_plate_motion/
+│   │   ├── simulate_plate_motion/
+│   │   ├── __init__.py
+│   │   ├── run_cratons.py              # Craton seeding stage runner; resolves params and dispatches selected strategy
+│   │   ├── run_export.py               # Handles writing the final Planet object to disk via Planet.save()
+│   │   └── run_mesh.py                 # Mesh generation stage runner; delegates to mesh strategy after resolving params
+│   │   
+│   ├── __init__.py
 │   └── generate_planet.py              # CLI entry point: generate, load, and export Planet data
 │   
 ├── logs/
@@ -115,6 +128,10 @@
 │       
 ├── tests/                                      # Unit and integration tests across all project layers
 │   ├── generation/                             # Planet generation tests
+│   │   ├── cli/
+│   │   │   ├── test_argument_parser.py         # Verifies CLI argument parsing, config loading, and overrides
+│   │   │   └── test_parameter_merge.py         # Tests merging logic: CLI > config > schema default + type coercion
+│   │   │   
 │   │   ├── models/
 │   │   │   └── test_planet_io.py               # Tests for Planet.save() and Planet.load() HDF5 serialization
 │   │   │   
@@ -125,9 +142,13 @@
 │   │       ├── generate_mesh/
 │   │       │   └── test_icosphere.py           # Unit tests for IcosphereMeshStrategy and Planet mesh validity
 │   │       │   
-│   │       └── seed_cratons/
-│   │           └── test_spaced_random.py
-│   │           
+│   │       ├── seed_cratons/
+│   │       │   └── test_spaced_random.py
+│   │       │   
+│   │       ├── test_run_cratons.py             # Validates craton seeding stage populates cratons correctly
+│   │       ├── test_run_export.py              # Confirms .planetbin file is written and re-loadable
+│   │       └── test_run_mesh.py                # Checks mesh generation stage produces valid face list
+│   │       
 │   ├── logging/                                # Logging config and logger interface tests
 │   │   ├── __init__.py
 │   │   ├── test_log_config.py                  # Tests for config setup, TRACE level, hooks
@@ -157,6 +178,7 @@
 │           │   └── region_overlay.py           # (WIP) Future overlay for highlighting political regions
 │           │   
 │           ├── gl_widget.py                    # Contains PlanetGLWidget (QOpenGLWidget)
+│           ├── IcosphereViewerPlan.md
 │           ├── launch_viewer.py                # CLI entrypoint for the standalone viewer
 │           ├── mesh_render_data.py             # MeshRenderData class (DTO for rendering)
 │           ├── overlay_manager.py              # Manages active overlays in the viewer.
