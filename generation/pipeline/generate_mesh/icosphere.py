@@ -73,7 +73,11 @@ class IcosphereMeshStrategy(BaseMeshStrategy):
         adjacency = self._build_adjacency(faces)
 
         face_ids = np.arange(faces.shape[0], dtype=np.int32)
+
+        # Compute geometric centroid of each triangular face
         face_centers = vertices[faces].mean(axis=1)
+        log.debug("Computed %d face centroids", len(face_centers))
+
         planet.mesh = MeshData(vertices=vertices, faces=faces, adjacency=adjacency, face_ids=face_ids, face_centers=face_centers)
 
         log.info("Icosphere mesh generation complete. Total vertices: %d, faces: %d", len(vertices), len(faces))

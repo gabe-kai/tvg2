@@ -14,15 +14,16 @@
 - 2025.04.10:  Build seed_cratons step to the generate_planet pipeline.
 - 2025.04.11:  Built the cratons_overlay for the mesh-viewer. Changed all overlays to start unchecked.
 - 2025.04.12:  Fixed the Craton Overlay flat-shading. Improved craton seeding performance.
+- 2025.04.17:  Refactored generate_planet to split CLI arguments into another module. Refactored IcosphereMeshStrategy to calculate & store face centroids.
 
 ---
 
 ## In-Progress and Next-Up
 
-[X] Plan & Implement the Craton-Seeding pipeline step & debug overlay for mesh-viewer
 [X] Refactor generate_planet to split the CLI commands into a new module.
-[ ] Refactor the generate_mesh step to calculate and store face centroids. Note that they will need to be updated after mesh deformations.
-[ ] Enable live debug viewing during planet generation or standalone use
+[X] Refactor the generate_mesh step to calculate and store face centroids. Note that they will need to be updated after mesh deformations.
+[ ] Implement the simulate_plate_motion pipeline steps.
+[ ] Enable live debug viewing during planet generation or standalone use.
 
 ---
 

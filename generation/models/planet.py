@@ -52,6 +52,7 @@ class Planet:
         if self.mesh:
             num_faces = self.mesh.faces.shape[0]
             face_ids = '✔' if self.mesh.face_ids is not None else '✘'
+            face_centers = '✔' if self.mesh.face_centers is not None else '✘'
             adjacency = '✔' if self.mesh.adjacency else '✘'
             mesh_info = f"✔ ({num_faces} faces, face_ids: {face_ids}, adjacency: {adjacency})"
 

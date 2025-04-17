@@ -20,9 +20,10 @@ Expand each craton from its seed face (center index) into a stable region that w
 ### 🛠 Implementation Notes
 - Use BFS from each craton's center face
 - Use `planet.mesh.adjacency` to get neighbors
-- Consider hard limit (e.g., radius or number of faces per craton)
+- Apply a hard limit (e.g., number of faces per craton)
+- Maintain a global set of claimed face IDs to prevent overlap
+- Implement an exclusion buffer or spacing check before growing each craton to avoid crowding or adjacency
 - Store results directly on `Craton.face_ids`
-- Prevent overlapping by tracking claimed faces across all cratons
 
 ---
 
@@ -40,8 +41,6 @@ Create a tectonic plate for each craton, initializing plate data and linking the
   - `craton_id: int`
   - `has_craton: bool`
   - `craton_face_count: int`
-  - `id: int`
-  - `craton_id: int`
   - `seed_faces: List[int]` (usually same as craton face_ids)
 
 ### 🛠 Implementation Notes
@@ -51,6 +50,7 @@ Create a tectonic plate for each craton, initializing plate data and linking the
 - Assign sequential IDs
 - Store face assignments temporarily in plate object or in a plate map
 - Track global `plate_id_per_face: List[int]` (unassigned = -1)
+- Consider storing `plate_id_per_face` on `Planet.plate_map.face_to_plate` for easier downstream access
 
 ---
 
@@ -86,7 +86,7 @@ Plate growth can be implemented using different strategies, selectable via `get_
 - Can simulate stretched or uneven growth patterns.
 - Most computationally expensive.
 
-
+### 🧭 Purpose
 Expand each plate from its craton seed region to cover the rest of the mesh.
 
 ### 📦 Inputs
@@ -102,8 +102,7 @@ Expand each plate from its craton seed region to cover the rest of the mesh.
 - Maintain a global frontier queue per plate or simulate competitive wavefronts
 - Prevent overlap: once a face is claimed, it is locked
 - Allow configuration of randomness intensity, bias direction, and frontier priorities
-- Maintain a global frontier queue per plate
-- Prevent overlap: once a face is claimed, it is locked
+- Instrument plate growth process: track plate sizes and claim success per iteration (e.g., `growth_stats` dict or list of frame records)
 - Prioritize balance and even spread (e.g., avoid overly dominant plates)
 
 ---
@@ -125,6 +124,7 @@ Identify borders between neighboring plates by examining adjacent faces.
 - For each face, check its neighbors
 - If any neighbor belongs to a different plate → boundary
 - Store boundary data as list of edge pairs or in an edge graph
+- Normalize boundary edge keys: always store as sorted tuples `(min(face_a, face_b), max(face_a, face_b))` to avoid duplicate edges or orientation confusion
 
 ---
 
@@ -142,9 +142,11 @@ Give each plate a motion vector used later to generate elevation and simulate te
   - `speed: float` (optional)
 
 ### 🛠 Implementation Notes
-- Use random vectors or generate structured motion fields
+- Use reproducible random vectors seeded per-plate to allow consistency
+- Optionally support structured motion templates (e.g. radial, parallel, chaotic)
 - Normalize all vectors
 - Store directly in the `Plate` object
+- Consider logging or exporting motion vector summary for debug overlays
 - Later stages (e.g., Elevation) will use these vectors
 
 ---

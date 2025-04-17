@@ -12,11 +12,12 @@
 │   │   ├── done/
 │   │   │   ├── Design_SeedCratons.md                       # Detailed design document for the craton seeding pipeline
 │   │   │   ├── IcosphereViewer.md
-│   │   │   └── IcosphereViewerOverlays.md                  # Build overlay system for the stand-alone mesh viewer
+│   │   │   ├── IcosphereViewerOverlays.md                  # Build overlay system for the stand-alone mesh viewer
+│   │   │   ├── Refactor_GeneratePlanet_Split_CLIargs.md
+│   │   │   └── Refactor_mesh_generation_centroids.md
 │   │   │   
 │   │   └── todo/
-│   │       ├── Implement_SimulatePlateMotion.md
-│   │       └── Refactor_GeneratePlanet_Split_CLIargs.md
+│   │       └── Implement_SimulatePlateMotion.md
 │   │       
 │   ├── DevelopmentNotes.md                                 # Development procedures and methods this project (should) follow
 │   ├── PipelineDesign.md                                   # High-level overview of all major pipelines (generation, game, UI)
